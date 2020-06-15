@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Feeds</title>
+    </head>
+    <body>
+
+        <h1>Feed</h1>
+
+        <div>
+            <div th:each="post : ${posts}">
+                <p th:text="${post.user}">postaaja</p>
+                <p th:text="${post.date}">aika</p>
+                <p th:text="${post.content}">sisältö</p>
+            </div>
+        </div>
+
+    </body>
+</html>
