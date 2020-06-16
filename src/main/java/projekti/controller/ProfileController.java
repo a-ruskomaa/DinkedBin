@@ -32,9 +32,13 @@ public class ProfileController {
     
     @GetMapping("/profile/{username}")
     public String getProfile(Model model, @PathVariable("username") String username) {
-        User u = userService.fetch(username);
-        model.addAttribute("username", u.getAccount().getUsername());
-        model.addAttribute("name", u.getName());
+        User user = userService.fetch(username);
+        Boolean isOwnProfile = false;
+        if (SecurityContextHolder.getContext().getAuthentication().getName().equals(user.getAccount().getUsername())) {
+            isOwnProfile = true;
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("isOwnProfile", isOwnProfile);
         return "profile";
     }
     

@@ -41,7 +41,7 @@ public class AccountController {
         
         Account a = new Account(username, passwordEncoder.encode(password));
         a = accountService.create(a);
-        User u = new User(a, name, null, new HashSet<Connection>(), new HashSet<Connection>());
+        User u = new User(a, name, null, new HashSet<Connection>(), new HashSet<Connection>(), null);
         userService.create(u);
         System.out.println("Adding new user:" + a.getUsername());
         return "redirect:/login";

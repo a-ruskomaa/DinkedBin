@@ -5,6 +5,7 @@
  */
 package projekti.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projekti.dao.UserRepository;
@@ -33,6 +34,10 @@ public class UserService {
 
     public User fetch(String username) {
         return userRepository.findByUsername(username);
+    }
+    
+    public List<User> search(String string) {
+        return userRepository.findByNameContainingIgnoreCase(string);
     }
     
 }

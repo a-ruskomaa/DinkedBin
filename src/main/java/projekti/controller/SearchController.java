@@ -1,8 +1,7 @@
 package projekti.controller;
 
-import java.util.HashSet;
-import projekti.domain.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,13 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import projekti.domain.Connection;
 import projekti.domain.User;
 import projekti.service.AccountService;
 import projekti.service.UserService;
 
 @Controller
-public class AccountController {
+public class SearchController {
     
     @Autowired
     AccountService accountService;
@@ -27,24 +25,23 @@ public class AccountController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @GetMapping("/register")
-    public String list(Model model) {
-        return "register";
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam("query") String query) {
+        User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("results", userService.search(query));
+        model.addAttribute("current", current);
+        return "search";
     }
-
+    
     @Transactional
-    @PostMapping("/register")
-    public String add(@RequestParam String username, @RequestParam String password, @RequestParam String name) {
-        if (accountService.fetch(username) != null) {
-            return "redirect:/register";
+    @PostMapping("/request")
+    public String request(@RequestParam String username) {
+        User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (current != null) {
+            return "redirect:/request";
         }
         
-        Account a = new Account(username, passwordEncoder.encode(password));
-        a = accountService.create(a);
-        User u = new User(a, name, null, new HashSet<Connection>(), new HashSet<Connection>());
-        userService.create(u);
-        System.out.println("Adding new user:" + a.getUsername());
-        return "redirect:/login";
+        return "redirect:/profile";
     }
 
 }
