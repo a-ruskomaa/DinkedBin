@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projekti;
+package projekti.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,8 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
     
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+    
     @PostMapping("/login")
-    public String login(@RequestParam("user") String user) {
-        return "redirect:/feed";
+    public String dologin() {
+        return "login";
     }
 }

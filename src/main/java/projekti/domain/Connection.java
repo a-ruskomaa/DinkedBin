@@ -5,11 +5,10 @@
  */
 package projekti.domain;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,12 +22,16 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @Data
 @Entity
-public class Post extends AbstractPersistable<Long>{
+public class Connection extends AbstractPersistable<Long> {
     @ManyToOne
-    private User user;
-    private LocalDateTime date;
-    private String content;
+    @JoinColumn(referencedColumnName = "id")
+    private User user1;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private User user2;
+    @ManyToOne
+    private User requestedBy;
+    private Boolean isAccepted = false;
+    private LocalDate connectedSince;
     
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
 }

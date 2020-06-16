@@ -1,15 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
+    <head th:replace="fragments/fragments :: head">
         <meta charset="UTF-8" />
         <title>Profile</title>
     </head>
     <body>
 
-        <h1 th:text="${user.name}">User</h1>
+        <h1 th:text="${username}">User</h1>
+        
+        <p>name: <span th:text="${name}"</p>
 
         <h2>Skills</h2>
 
         <h2>asdasd</h2>
+        <div th:replace="fragments/fragments :: scripts"></div>
     </body>
 </html>

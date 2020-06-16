@@ -6,8 +6,13 @@
 package projekti.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,12 +28,19 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class User extends AbstractPersistable<Long>{
     
-    private List<User> connections = new ArrayList<>();
-    private List<User> requests = new ArrayList<>();
+    @OneToOne
+    private Account account;
     
     private String name;
     
+    @Lob
     private ImageObject profilePicture;
     
+    
+    @OneToMany(mappedBy = "user1")
+    private Set<Connection> requestedConnections = new HashSet<>();
+    
+    @OneToMany(mappedBy = "user2")
+    private Set<Connection> receivedConnections = new HashSet<>();
     
 }
