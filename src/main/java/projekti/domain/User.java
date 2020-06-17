@@ -10,7 +10,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -20,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.WhereJoinTable;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
@@ -38,24 +42,40 @@ public class User extends AbstractPersistable<Long>{
     private String name;
     
     @Lob
+    @OneToOne
     private ImageObject picture;
+   
     
-    @OneToMany(mappedBy = "user1")
-    private Set<Connection> requestedConnections = new HashSet<>();
+    @ManyToMany
+    @WhereJoinTable(clause = "is_accepted = true")
+    @JoinTable(name = "Connection",
+            joinColumns
+            = @JoinColumn(name = "sender_id", referencedColumnName = "id"),
+            inverseJoinColumns
+            = @JoinColumn(name = "recipient_id", referencedColumnName = "id")
+    )
+
+    private List<User> connections = new ArrayList<>();
+
+    @ManyToMany
+    @WhereJoinTable(clause = "is_accepted = false")
+    @JoinTable(name = "Connection",
+            joinColumns
+            = @JoinColumn(name = "sender_id", referencedColumnName = "id"),
+            inverseJoinColumns
+            = @JoinColumn(name = "recipient_id", referencedColumnName = "id")
+    )
+
+    private List<User> requestedConnections = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user2")
-    private Set<Connection> receivedConnections = new HashSet<>();
-    
-    @Transient
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private Set<Connection> connections;
-    
-    public Set<Connection> getConnections() {
-        this.connections = new HashSet<Connection>();
-        this.connections.addAll(receivedConnections);
-        this.connections.addAll(requestedConnections);
-        return this.connections;
-    }
-    
+    @ManyToMany
+    @WhereJoinTable(clause = "is_accepted = false")
+    @JoinTable(name = "Connection",
+            joinColumns
+            = @JoinColumn(name = "recipient_id", referencedColumnName = "id"),
+            inverseJoinColumns
+            = @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    )
+
+    private List<User> receivedRequests = new ArrayList<>();
 }

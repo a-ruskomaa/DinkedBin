@@ -5,7 +5,10 @@
  */
 package projekti.controller;
 
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import projekti.domain.Connection;
 import projekti.domain.User;
 import projekti.service.AccountService;
 import projekti.service.UserService;
@@ -36,7 +40,7 @@ public class ProfileController {
     @RequestMapping(path = "/profile")
     public String redirectToOwnProfile() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
+        if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             return "redirect:/";
         }
         String username = auth.getName();
@@ -45,14 +49,13 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/{username}")
-    public String getProfile(Model model, @PathVariable("username") String username) {
+    public String getProfile(Authentication authentication, Model model, @PathVariable("username") String username) {
         User user = userService.fetch(username);
         Boolean isOwnProfile = false;
         Boolean isAuthenticated = false;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
             isAuthenticated = true;
-            if (auth.getName().equals(user.getAccount().getUsername())) {
+            if (authentication.getName().equals(user.getAccount().getUsername())) {
                 isOwnProfile = true;
             }
         }
@@ -84,14 +87,4 @@ public class ProfileController {
 //        return user.getPicture().getContent();
 //    }
 
-    @Transactional
-    @PostMapping("/request")
-    public String request(@RequestParam String username) {
-        User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (current != null) {
-            return "redirect:/request";
-        }
-
-        return "redirect:/profile";
-    }
 }

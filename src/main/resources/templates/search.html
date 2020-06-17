@@ -21,7 +21,11 @@
             <span th:replace="fragments/fragments :: picture-small"/>
             <span th:text="${user.name}"/>
             <span th:if="${#lists.contains(current.connections, user)}">Friends</span>
-            <span th:unless="${#lists.contains(current.connections, user)}">Not friends</span>
+            <span th:unless="${#lists.contains(current.connections, user)}">Not friends
+              <form th:action="@{/connections/request}" method="post">
+                <button class="btn btn-dark ml-5" name="username" th:value="${user.account.username}"type="submit">Request connection</button>
+              </form>
+            </span>
           </span>
         </li>
       </ul>
