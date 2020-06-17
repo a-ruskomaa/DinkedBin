@@ -24,13 +24,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Connection extends AbstractPersistable<Long> {
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "user_requested_by", referencedColumnName = "id")
     private User user1;
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id")
+    @JoinColumn(name = "user_other", referencedColumnName = "id")
     private User user2;
-    @ManyToOne
-    private User requestedBy;
     private Boolean isAccepted = false;
     private LocalDate connectedSince;
     

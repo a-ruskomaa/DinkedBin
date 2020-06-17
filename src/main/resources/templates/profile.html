@@ -6,12 +6,7 @@
     </head>
     <body>
         <div>
-            <span th:if="${user.profilePicture != null}">
-                <img th:src="@{/profile/{username}/pic(username=${user.account.username})}"/>
-            </span>
-            <span th:if="${user.profilePicture == null}">
-                <img th:src="@{/static/img/no-pic.png}"/>
-            </span>
+            <img th:src="@{/profile/{username}/picture(username=${user.account.username})}"/>
             
             <span th:text="${user.name}">nimi</spanp>
             </div>

@@ -16,7 +16,7 @@
     <ul th:each="user : ${results}">
       <li>
         <span>
-          <img th:src="@{/users/{uname}/picture}>
+          <img th:src="@{/profile/${user.account.username}/picture}">
           <span th:text="${user.name}"/>
           <!-- if current.connections.contains(user) show buttons-->
           </span>

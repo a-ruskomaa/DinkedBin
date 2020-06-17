@@ -26,22 +26,13 @@ public class SearchController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/search")
-    public String search(Model model, @RequestParam("query") String query) {
+    public String search(Model model, @RequestParam(value = "query", required = false) String query) {
         User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("results", userService.search(query));
+        if (query != null) {
+            model.addAttribute("results", userService.search(query));
+        }
         model.addAttribute("current", current);
         return "search";
-    }
-    
-    @Transactional
-    @PostMapping("/request")
-    public String request(@RequestParam String username) {
-        User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (current != null) {
-            return "redirect:/request";
-        }
-        
-        return "redirect:/profile";
     }
 
 }
