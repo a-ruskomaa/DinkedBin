@@ -5,11 +5,12 @@
         <title>Profile</title>
     </head>
     <body>
-        <div>
-            <img th:src="@{/profile/{username}/picture(username=${user.account.username})}"/>
+        <nav th:replace="fragments/fragments :: nav"/>
+        <section class="container">
+            <span th:replace="fragments/fragments :: picture"/>
             
             <span th:text="${user.name}">nimi</spanp>
-            </div>
+        </section>
 
         <h2>Skills</h2>
 

@@ -6,22 +6,26 @@
 </head>
 
   <body>
-    <h1>Search for users</h1>
+    <nav th:replace="fragments/fragments :: nav"/>
+    <section class="container pt-5 mt-5">
 
-    <form th:action="@{/search}" method="GET">
-      <input type="text" name="query" id="query"/>
-      <input type="submit">Search</input>
-    </form>
-
-    <ul th:each="user : ${results}">
-      <li>
-        <span>
-          <img th:src="@{/profile/${user.account.username}/picture}">
-          <span th:text="${user.name}"/>
-          <!-- if current.connections.contains(user) show buttons-->
+      <h2>Search results for "<span th:text="${query}"/>" :</h2>       
+      <!--form th:action="@{/search}" method="GET">
+        <input type="text" name="query" id="query"/>
+        <input type="submit">Search</input>
+      </form-->
+      
+      <ul class="list-unstyled" th:each="user : ${results}">
+        <li>
+          <span>
+            <span th:replace="fragments/fragments :: picture-small"/>
+            <span th:text="${user.name}"/>
+            <span th:if="${#lists.contains(current.connections, user)}">Friends</span>
+            <span th:unless="${#lists.contains(current.connections, user)}">Not friends</span>
           </span>
         </li>
-    </ul>
+      </ul>
+    </section>
 
     <div th:replace="fragments/fragments :: scripts"></div>
     </body>

@@ -30,6 +30,7 @@ public class SearchController {
         User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
         if (query != null) {
             model.addAttribute("results", userService.search(query));
+            model.addAttribute("query", query);
         }
         model.addAttribute("current", current);
         return "search";
