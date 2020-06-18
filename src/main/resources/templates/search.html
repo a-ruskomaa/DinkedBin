@@ -1,34 +1,53 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/fragments :: head"></div>
+
+<head th:replace="fragments/fragments :: head">
+  </div>
   <meta charset="UTF-8" />
   <title>Login</title>
 </head>
 
-  <body>
-    <nav th:replace="fragments/fragments :: nav"/>
-    <section class="container pt-5 mt-5">
+<body>
+  <nav th:replace="fragments/fragments :: nav" />
+  <section class="container pt-5 mt-5">
 
-      <h2>Search results for "<span th:text="${query}"/>" :</h2>       
-      <!--form th:action="@{/search}" method="GET">
+    <h2>Search results for "<span th:text="${query}" />" :</h2>
+    <!--form th:action="@{/search}" method="GET">
         <input type="text" name="query" id="query"/>
         <input type="submit">Search</input>
       </form-->
-      
-      <ul class="list-unstyled" th:each="user : ${results}">
-        <form class="form-inline" th:action="@{/connections/request}" method="post">
-        <li>
+
+      <form method="post">
+      <ul class="list-group" th:each="user : ${results}">
+        <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
           <span>
-            <span th:replace="fragments/fragments :: picture-small"/>
-            <span th:text="${user.name}"/>
-            <span th:if="${#lists.contains(current.connections, user)}">Friends</span>
-            <span th:unless="${#lists.contains(current.connections, user)}">Not friends
-                <button class="btn btn-sm btn-dark ml-5" name="username" th:value="${user.account.username}"type="submit">Request connection</button>
+            <span th:replace="fragments/fragments :: picture-small" />
+            <span th:text="${user.name}" />
+          </span>
+            <span th:unless="${#lists.contains(current.connections, user)}">
+              <span th:if="${#lists.contains(current.requestedConnections, user)}">
+                <span class="mr-2">
+                  Connection requested
+                </span>
+                <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.account.username}" type="submit">Cancel request</button>
               </span>
-            </span>
+              <span th:if="${#lists.contains(current.receivedRequests, user)}">
+                <span class="mr-3">
+                  Has requested to connect
+                </span>
+                <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.account.username}" type="submit">Accept</button>
+                <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.account.username}" type="submit">Decline</button>
+              </span>
+              <span th:unless="${#lists.contains(current.requestedConnections, user)}">
+                <span th:unless="${#lists.contains(current.receivedRequests, user)}">
+                <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.account.username}" type="submit">Request connection</button>
+                </span>
+              </span>
           </li>
-        </form>
+        </div>
         </ul>
+      </form>
     </section>
 
     <div th:replace="fragments/fragments :: scripts"></div>
