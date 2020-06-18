@@ -33,10 +33,6 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-
-    public User create(User user) {
-        return userRepository.save(user);
-    }
     
     public User save(User user) {
         return userRepository.save(user);

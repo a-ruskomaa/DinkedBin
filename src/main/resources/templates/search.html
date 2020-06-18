@@ -21,10 +21,9 @@
       <ul class="list-group" th:each="user : ${results}">
         <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
         <li class="list-group-item d-flex justify-content-between align-items-center">
-          <span>
-            <span th:replace="fragments/fragments :: picture-small" />
-            <span th:text="${user.name}" />
-          </span>
+          <a th:href="@{/profile/{uname}/(uname=${user.account.username})}">
+            <span th:replace="fragments/fragments :: picture-small" /><span th:text="${user.name}" />
+          </a>
             <span th:unless="${#lists.contains(current.connections, user)}">
               <span th:if="${#lists.contains(current.requestedConnections, user)}">
                 <span class="mr-2">

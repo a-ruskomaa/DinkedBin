@@ -65,7 +65,7 @@ public class AccountController {
         User u = new User();
         u.setAccount(a);
         u.setName(name);
-        userService.create(u);
+        userService.save(u);
         System.out.println("Adding new user:" + a.getUsername());
         return "redirect:/register?success";
     }

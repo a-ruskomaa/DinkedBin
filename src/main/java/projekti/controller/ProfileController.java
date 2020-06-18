@@ -60,25 +60,4 @@ public class ProfileController {
         return "profile";
     }
 
-//    @GetMapping(value = "/profile/{username}/picture", produces = "image/png")
-//    @ResponseBody
-//    public byte[] getPicture(@PathVariable("username") String username) {
-//        User user = userService.fetch(username);
-//        if (user.getPicture() == null) {
-//
-//            try {
-//                Resource resource = new ClassPathResource("static/img/no-pic.png");
-//                InputStream input = resource.getInputStream();
-//                return IOUtils.toByteArray(input);
-//            } catch (IOException ex) {
-//                Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
-//                return new byte[0];
-//            } catch (NullPointerException ex) {
-//                Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
-//                return new byte[0];
-//            }
-//        }
-//        return user.getPicture().getContent();
-//    }
-
 }

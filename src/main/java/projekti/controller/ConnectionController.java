@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import projekti.domain.Connection;
 import projekti.domain.User;
 import projekti.service.ConnectionService;
 import projekti.service.UserService;
@@ -43,73 +42,37 @@ public class ConnectionController {
 
     @PostMapping("/connections/request")
     public String requestConnection(@RequestParam String username, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
-
-        User requested = userService.fetch(username);
-        
-        Connection connection = new Connection(current, requested, Boolean.FALSE);
-        
-        connectionService.save(connection);
-
-        return "redirect:/connections";
-    }
-    
-    @PostMapping("/connections/remove")
-    public String removeConnection(@RequestParam String username, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
-
-        User other = userService.fetch(username);
-        
-        Connection c = connectionService.fetch(current, other);
-        
-        if (c == null) {
-            c = connectionService.fetch(other, current);
-        }
-        
-        connectionService.remove(c);
+        connectionService.create(authentication.getName(), username);
 
         return "redirect:/connections";
     }
     
     @PostMapping("/connections/cancel")
     public String cancelRequest(@RequestParam String username, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
-
-        User recipient = userService.fetch(username);
-        
-        
-        Connection c = connectionService.fetch(current, recipient);
-        
-        connectionService.remove(c);
+        connectionService.remove(authentication.getName(), username);
 
         return "redirect:/connections";
     }
-
+    
     @PostMapping("/connections/accept")
     public String acceptRequest(@RequestParam String username, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
-
-        User sender = userService.fetch(username);
-        
-        Connection c = connectionService.fetch(sender, current);
-        
-        c.setIsAccepted(true);
-        
-        connectionService.save(c);
+        connectionService.accept(authentication.getName(), username);
 
         return "redirect:/connections";
     }
 
     @PostMapping("/connections/decline")
     public String declineRequest(@RequestParam String username, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
-
-        User sender = userService.fetch(username);
-        
-        Connection c = connectionService.fetch(sender, current);
-        
-        connectionService.remove(c);
+        connectionService.remove(username, authentication.getName());
 
         return "redirect:/connections";
     }
+    
+    @PostMapping("/connections/remove")
+    public String removeConnection(@RequestParam String username, Authentication authentication) {
+        connectionService.remove(authentication.getName(), username);
+
+        return "redirect:/connections";
+    }
+
 }
