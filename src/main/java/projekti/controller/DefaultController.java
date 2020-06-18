@@ -9,7 +9,7 @@ public class DefaultController {
 
     @GetMapping("/")
     public String helloWorld() {
-        return "login";
+        return "index";
     }
 
 }
