@@ -1,15 +1,7 @@
 package projekti.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 import projekti.domain.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import projekti.domain.Connection;
 import projekti.domain.User;
 import projekti.service.AccountService;
 import projekti.service.UserService;
@@ -36,6 +27,21 @@ public class AccountController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @GetMapping("/login")
+    public String login() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && !(auth instanceof AnonymousAuthenticationToken)) {
+            System.out.println("User logged in: redirecting");
+            return "redirect:/profile";
+        }
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String dologin() {
+        return "login";
+    }
 
     @GetMapping("/register")
     public String list(Model model) {

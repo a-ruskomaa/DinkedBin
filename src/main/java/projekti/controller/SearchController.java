@@ -1,6 +1,7 @@
 package projekti.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,8 +27,8 @@ public class SearchController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/search")
-    public String search(Model model, @RequestParam(value = "query", required = false) String query) {
-        User current = userService.fetch(SecurityContextHolder.getContext().getAuthentication().getName());
+    public String search(Model model, Authentication authentication, @RequestParam(value = "query", required = false) String query) {
+        User current = userService.fetch(authentication.getName());
         if (query != null) {
             model.addAttribute("results", userService.search(query));
             model.addAttribute("query", query);

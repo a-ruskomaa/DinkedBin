@@ -29,6 +29,6 @@ public class Connection extends AbstractPersistable<Long> {
     @OneToOne
     private User recipient;
     private Boolean isAccepted = false;
-    private LocalDate connectedSince;
+//    private LocalDate connectedSince;
     
 }

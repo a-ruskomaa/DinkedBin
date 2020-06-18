@@ -6,15 +6,12 @@
 package projekti.domain;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -34,28 +31,46 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @Data
 @Entity
-public class User extends AbstractPersistable<Long>{
-    
+public class User extends AbstractPersistable<Long> {
+
     @OneToOne
     private Account account;
-    
+
     private String name;
-    
+
     @Lob
     @OneToOne
     private ImageObject picture;
-   
-    
+
+    @Transient
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private List<User> connections;
+
+    public List<User> getConnections() {
+        this.connections = new ArrayList<User>();
+        this.connections.addAll(getConnectedTo());
+        this.connections.addAll(getConnectedFrom());
+        return this.connections;
+    }
+
     @ManyToMany
     @WhereJoinTable(clause = "is_accepted = true")
     @JoinTable(name = "Connection",
             joinColumns
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"),
             inverseJoinColumns
-            = @JoinColumn(name = "recipient_id", referencedColumnName = "id")
-    )
+            = @JoinColumn(name = "recipient_id", referencedColumnName = "id"))
+    private List<User> connectedTo = new ArrayList<>();
 
-    private List<User> connections = new ArrayList<>();
+    @ManyToMany
+    @WhereJoinTable(clause = "is_accepted = true")
+    @JoinTable(name = "Connection",
+            joinColumns
+            = @JoinColumn(name = "recipient_id", referencedColumnName = "id"),
+            inverseJoinColumns
+            = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
+    private List<User> connectedFrom = new ArrayList<>();
 
     @ManyToMany
     @WhereJoinTable(clause = "is_accepted = false")
@@ -63,19 +78,15 @@ public class User extends AbstractPersistable<Long>{
             joinColumns
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"),
             inverseJoinColumns
-            = @JoinColumn(name = "recipient_id", referencedColumnName = "id")
-    )
-
+            = @JoinColumn(name = "recipient_id", referencedColumnName = "id"))
     private List<User> requestedConnections = new ArrayList<>();
-    
+
     @ManyToMany
     @WhereJoinTable(clause = "is_accepted = false")
     @JoinTable(name = "Connection",
             joinColumns
             = @JoinColumn(name = "recipient_id", referencedColumnName = "id"),
             inverseJoinColumns
-            = @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    )
-
+            = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
     private List<User> receivedRequests = new ArrayList<>();
 }

@@ -5,23 +5,15 @@
  */
 package projekti.controller;
 
-import java.time.LocalDate;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import projekti.domain.Connection;
 import projekti.domain.User;
-import projekti.service.AccountService;
 import projekti.service.ConnectionService;
 import projekti.service.UserService;
 
@@ -49,40 +41,74 @@ public class ConnectionController {
         return "connections";
     }
 
-    @Transactional
     @PostMapping("/connections/request")
     public String requestConnection(@RequestParam String username, Authentication authentication) {
         User current = userService.fetch(authentication.getName());
 
         User requested = userService.fetch(username);
         
-        Connection connection = new Connection(current, requested, Boolean.FALSE, LocalDate.MIN);
+        Connection connection = new Connection(current, requested, Boolean.FALSE);
         
-        connectionService.create(connection);
+        connectionService.save(connection);
+
+        return "redirect:/connections";
+    }
+    
+    @PostMapping("/connections/remove")
+    public String removeConnection(@RequestParam String username, Authentication authentication) {
+        User current = userService.fetch(authentication.getName());
+
+        User other = userService.fetch(username);
+        
+        Connection c = connectionService.fetch(current, other);
+        
+        if (c == null) {
+            c = connectionService.fetch(other, current);
+        }
+        
+        connectionService.remove(c);
+
+        return "redirect:/connections";
+    }
+    
+    @PostMapping("/connections/cancel")
+    public String cancelRequest(@RequestParam String username, Authentication authentication) {
+        User current = userService.fetch(authentication.getName());
+
+        User recipient = userService.fetch(username);
+        
+        
+        Connection c = connectionService.fetch(current, recipient);
+        
+        connectionService.remove(c);
 
         return "redirect:/connections";
     }
 
-    @Transactional
     @PostMapping("/connections/accept")
-    public String acceptConnection(@RequestParam String username, Authentication authentication) {
+    public String acceptRequest(@RequestParam String username, Authentication authentication) {
         User current = userService.fetch(authentication.getName());
 
-        User requestedBy = userService.fetch(username);
+        User sender = userService.fetch(username);
+        
+        Connection c = connectionService.fetch(sender, current);
+        
+        c.setIsAccepted(true);
+        
+        connectionService.save(c);
 
         return "redirect:/connections";
     }
 
-    @Transactional
     @PostMapping("/connections/decline")
-    public String declineConnection(@RequestParam String username, Authentication authentication) {
+    public String declineRequest(@RequestParam String username, Authentication authentication) {
         User current = userService.fetch(authentication.getName());
 
-        User requestedBy = userService.fetch(username);
-        Connection connection;
+        User sender = userService.fetch(username);
         
-
-        userService.save(current);
+        Connection c = connectionService.fetch(sender, current);
+        
+        connectionService.remove(c);
 
         return "redirect:/connections";
     }
