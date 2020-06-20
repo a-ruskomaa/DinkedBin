@@ -8,24 +8,128 @@
 
 <body>
     <nav th:replace="fragments/fragments :: nav" />
+
+    <!-- Profile picture and name-->
     <section class="container mt-5 pt-5">
         <div class="row">
             <div class="col-lg-3">
                 <span th:replace="fragments/fragments :: picture" />
             </div>
             <div class="col-md-9 my-auto">
-                <span class="h2" th:text="${user.name}">nimi</span>
+                <span class="h1" th:text="${user.name}">nimi</span>
+                <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
+                        <span th:unless="${#lists.contains(current.connections, user)}">
+                          <span th:if="${#lists.contains(current.requestedConnections, user)}">
+                            <span class="mr-2">
+                              Connection requested
+                            </span>
+                            <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.account.username}" type="submit">Cancel request</button>
+                          </span>
+                          <span th:if="${#lists.contains(current.receivedRequests, user)}">
+                            <span class="mr-3">
+                              Has requested to connect
+                            </span>
+                            <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.account.username}" type="submit">Accept</button>
+                            <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.account.username}" type="submit">Decline</button>
+                          </span>
+                          <span th:unless="${#lists.contains(current.requestedConnections, user)}">
+                            <span th:unless="${#lists.contains(current.receivedRequests, user)}">
+                            <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.account.username}" type="submit">Request connection</button>
+                            </span>
+                          </span>
+                        </span>
+                    </div>
             </div>
         </div>
     </section>
+    <!-- Skills -->
     <section class="container mt-5">
         <div class="row">
-            <h2>Skills</h2>
+            <div class="col-lg-3">
+                <div class="row">
+                    <span class="h3">Skills</span>
+                </div>
+                <div class="row d-flex mr-2 ">
+
+                    <ul class="list-group w-100" th:each="skill : ${user.skills}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span th:text="${skill.name}" />
+                            <span>
+                                <span class="badge badge-primary badge-pill" th:text="${skill.upvotes}" />
+                                <a th:unless="${isOwnProfile}"
+                                    th:href="@{/profile/{uname}/skills/{id}/vote(uname=${user.account.username},id=${skill.id})}">
+                                    &#128077;
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
+                    <div th:if="${isOwnProfile == true}">
+                        <div class="form-group">
+                            <form method="post"
+                                th:action="@{/profile/{uname}/skills/add(uname=${user.account.username})}">
+                                <input class="form-control mr-sm-1" type="text" name="skill" placeholder="New skill">
+                                <button class="btn btn-success mr-0 ml-auto" type="submit">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9  my-auto">
+                <div class="row">
+                    <span class="h2">Bio</span>
+                </div>
+                <div class="row d-flex my-auto">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra
+                        metus fringilla sit amet. Nam vitae mollis libero. Suspendisse potenti. Mauris nec feugiat
+                        est.
+                        Aenean at odio eget nisl facilisis fermentum. Pellentesque accumsan, massa vel elementum
+                        semper,
+                        sapien massa eleifend eros, ac blandit urna dolor at ante. Pellentesque facilisis ipsum ut
+                        nulla
+                        suscipit, nec tristique dui porttitor. Nulla ac justo et sapien efficitur pharetra nec et
+                        ex.
+                    </p>
+
+                    <p>Suspendisse cursus scelerisque tempor. In dignissim elit a velit varius condimentum. Integer
+                        posuere, magna vel pulvinar euismod, eros eros rutrum urna, sit amet tempus massa magna in
+                        tellus. Cras elementum dolor id sapien varius, sit amet mollis nisi feugiat. Duis id aliquam
+                        nunc, fermentum pellentesque turpis. Sed nulla purus, euismod pharetra auctor sit amet,
+                        interdum
+                        pellentesque tellus. Nam nulla urna, finibus at eleifend pretium, aliquam non neque. Ut
+                        maximus
+                        tortor sed nisl dictum euismod. Curabitur eget consequat diam, non auctor risus. Quisque
+                        ullamcorper felis mattis est congue suscipit. Aliquam dapibus diam sed dictum pretium.</p>
+
+                    <p>Nullam rutrum mauris ut ex tempor, sed lobortis tortor tempor. Duis dignissim, nibh a
+                        ullamcorper
+                        porta, libero mi mollis ligula, vel consectetur ligula tortor non leo. Mauris maximus est et
+                        cursus posuere. Quisque ut vehicula orci. Curabitur convallis sagittis sapien, id euismod
+                        ante
+                        commodo sed. Integer et ullamcorper sapien. Sed maximus, erat id accumsan aliquet, ligula
+                        orci
+                        aliquam turpis, sed dignissim nisl nisi et mi. Curabitur quis consequat purus, at consequat
+                        orci. Nam ac rutrum elit. Donec elit purus, faucibus vitae commodo a, commodo vel arcu.
+                        Morbi
+                        ullamcorper pretium lectus eu tempor. Aenean ac ultricies dui, quis posuere orci. Integer
+                        urna
+                        nisl, vulputate eget tempus vel, pulvinar ut nisi. Proin lobortis porttitor mi a laoreet.
+                        Sed
+                        fermentum lorem quis arcu facilisis bibendum. Donec felis lorem, cursus vitae vestibulum
+                        nec,
+                        mollis et enim.</p>
+                </div>
+            </div>
         </div>
+
+        </div>
+    </section>
+    <!-- Connections
+    <section class="container mt-5">
         <div class="row">
             <h2>Connections</h2>
         </div>
     </section>
+    -->
 
 
     <div th:replace="fragments/fragments :: scripts"></div>

@@ -56,7 +56,7 @@ public class ConnectionController {
     
     @PostMapping("/connections/accept")
     public String acceptRequest(@RequestParam String username, Authentication authentication) {
-        connectionService.accept(authentication.getName(), username);
+        connectionService.accept(username, authentication.getName());
 
         return "redirect:/connections";
     }

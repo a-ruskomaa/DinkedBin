@@ -3,23 +3,22 @@ package projekti.domain;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Formula;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Skill extends AbstractPersistable<Long> {
+public class SkillVote extends AbstractPersistable<Long> {
 
     @ManyToOne
-    private User user;
-    private String name;
+    private Skill skill;
     
-//    @Formula("select count(voter_id) from skill_vote where skill_vote.id = id")
-    private Integer upvotes;
+    @OneToOne
+    private User voter;
 
 }

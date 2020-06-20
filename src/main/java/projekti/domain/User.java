@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -89,4 +90,7 @@ public class User extends AbstractPersistable<Long> {
             inverseJoinColumns
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
     private List<User> receivedRequests = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    private List<Skill> skills;
 }
