@@ -35,7 +35,7 @@ public class Comment extends AbstractPersistable<Long>{
     private LocalDateTime dateTime;
     
     @NotEmpty
-    @Size(min = 1, max = 4000)
+    @Size(max = 4000)
     @Column(length = 4000)
     private String content;
 }
