@@ -69,24 +69,32 @@
 
         </div>
     </nav>
-
-    <h1 th:text="${'Hello ' + message}">Hello world</h1>
-
-    <span th:fragment="picture" class="mr-4">
-        <span th:if="${user.picture != null}">
-            <img th:src="${user.picture.content})}" width="200" height="200" />
+    
+    <!-- pictures-->
+    <span th:fragment="picture-lg(picture)" class="mr-4">
+        <span th:if="${picture != null}">
+            <img th:src="${picture.content})}" width="200" height="200" />
         </span>
-        <span th:if="${user.picture == null}">
+        <span th:if="${picture == null}">
             <img th:src="@{/img/no-pic.png}" width="200" height="200" />
         </span>
     </span>
 
-    <span th:fragment="picture-small">
-        <span th:if="${user.picture != null}">
-            <img th:src="${user.picture.content})}" width="50" height="50" />
+    <span th:fragment="picture-sm(picture)">
+        <span th:if="${picture != null}">
+            <img th:src="${picture.content})}" width="50" height="50" />
         </span>
-        <span th:if="${user.picture == null}">
+        <span th:if="${picture == null}">
             <img th:src="@{/img/no-pic.png}" width="50" height="50" />
+        </span>
+    </span>
+
+    <span th:fragment="picture-xs(picture)">
+        <span th:if="${picture != null}">
+            <img th:src="${picture.content})}" width="25" height="25" />
+        </span>
+        <span th:if="${picture == null}">
+            <img th:src="@{/img/no-pic.png}" width="25" height="25" />
         </span>
     </span>
 

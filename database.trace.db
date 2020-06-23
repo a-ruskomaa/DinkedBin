@@ -670,3 +670,18 @@ insert into skill values (1,4,"asdasd") [42122-197]
 2020-06-18 13:32:47 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "INSERT INTO SKILL VALUES 1[*],4,""asdasd"" "; expected "("; SQL statement:
 insert into skill values 1,4,"asdasd" [42001-197]
+2020-06-22 17:18:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLException: Value too long for column "CONTENT VARCHAR(255)": "'     5  Bio  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra metus fringilla sit ... (1137)"; SQL statement:
+insert into post (content, date_time, user_id, id) values (?, ?, ?, ?) [22001-197]
+2020-06-22 17:21:17 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Value too long for column "CONTENT VARCHAR(255)": "'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra metus fringilla sit amet. Nam vit... (1124)"; SQL statement:
+insert into post (content, date_time, user_id, id) values (?, ?, ?, ?) [22001-197]
+2020-06-22 17:23:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Value too long for column "CONTENT VARCHAR(255)": "'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra metus fringilla sit amet. Nam vit... (1124)"; SQL statement:
+insert into post (content, date_time, user_id, id) values (?, ?, ?, ?) [22001-197]
+2020-06-22 17:28:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Value too long for column "CONTENT VARCHAR(255)": "'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra metus fringilla sit amet. Nam vit... (1124)"; SQL statement:
+insert into post (content, date_time, user_id, id) values (?, ?, ?, ?) [22001-197]
+2020-06-22 17:33:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Value too long for column "CONTENT VARCHAR(255)": "'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra metus fringilla sit amet. Nam vit... (478)"; SQL statement:
+insert into post (content, date_time, user_id, id) values (?, ?, ?, ?) [22001-197]

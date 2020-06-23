@@ -22,7 +22,7 @@
         <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <a th:href="@{/profile/{uname}/(uname=${user.account.username})}">
-            <span th:replace="fragments/fragments :: picture-small" /><span th:text="${user.name}" />
+            <span th:replace="fragments/fragments :: picture-sm(picture=${user.picture})" /><span th:text="${user.name}" />
           </a>
             <span th:unless="${#lists.contains(current.connections, user)}">
               <span th:if="${#lists.contains(current.requestedConnections, user)}">

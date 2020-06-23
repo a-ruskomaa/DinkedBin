@@ -17,7 +17,7 @@
       <ul class="list-group" th:each="user : ${received}">
         <li class="list-group-item d-flex justify-content-between align-items-center">
             <a th:href="@{/profile/{uname}/(uname=${user.account.username})}">
-              <span th:replace="fragments/fragments :: picture-small" /><span th:text="${user.name}" />
+              <span th:replace="fragments/fragments :: picture-sm(picture=${user.picture})" /><span th:text="${user.name}" />
             </a>
           <span>
             <span class="mr-3">
@@ -33,7 +33,7 @@
       <ul class="list-group" th:each="user : ${requests}">
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <a th:href="@{/profile/{uname}/(uname=${user.account.username})}">
-            <span th:replace="fragments/fragments :: picture-small" /><span th:text="${user.name}" />
+            <span th:replace="fragments/fragments :: picture-sm(picture=${user.picture})" /><span th:text="${user.name}" />
           </a>
           <span>
             <span class="mr-2">
@@ -47,7 +47,7 @@
       <ul class="list-group" th:each="user : ${connections}">
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <a th:href="@{/profile/{uname}/(uname=${user.account.username})}">
-            <span th:replace="fragments/fragments :: picture-small" /><span th:text="${user.name}" />
+            <span th:replace="fragments/fragments :: picture-sm(picture=${user.picture})" /><span th:text="${user.name}" />
           </a>
           <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/remove}"
             th:value="${user.account.username}" type="submit">Remove user</button>
