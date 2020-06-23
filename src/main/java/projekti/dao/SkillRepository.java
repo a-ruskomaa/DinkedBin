@@ -5,8 +5,10 @@
  */
 package projekti.dao;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import projekti.domain.Skill;
+import projekti.domain.User;
 
 /**
  *
@@ -14,4 +16,5 @@ import projekti.domain.Skill;
  */
 public interface SkillRepository extends JpaRepository<Skill, Long> {
     
+    List<Skill> findTop3ByUserOrderByUpvotes(User user);
 }

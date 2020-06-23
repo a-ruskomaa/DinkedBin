@@ -71,32 +71,36 @@
     </nav>
     
     <!-- pictures-->
-    <span th:fragment="picture-lg(picture)" class="mr-4">
-        <span th:if="${picture != null}">
-            <img th:src="${picture.content})}" width="200" height="200" />
+    <span th:fragment="picture-lg(user)" class="mr-4">
+        <span th:if="${user.picture != null}">
+            <img th:src="@{/profile/{uname}/picture/get(uname=${user.account.username})}" width="200" height="200" />
         </span>
-        <span th:if="${picture == null}">
+        <span th:if="${user.picture == null}">
             <img th:src="@{/img/no-pic.png}" width="200" height="200" />
         </span>
     </span>
 
-    <span th:fragment="picture-sm(picture)">
-        <span th:if="${picture != null}">
-            <img th:src="${picture.content})}" width="50" height="50" />
+    <span th:fragment="picture-sm(user)">
+        <span th:if="${user.picture != null}">
+            <img th:src="@{/profile/{uname}/picture/get(uname=${user.account.username})}" width="50" height="50" />
         </span>
-        <span th:if="${picture == null}">
+        <span th:if="${user.picture == null}">
             <img th:src="@{/img/no-pic.png}" width="50" height="50" />
         </span>
     </span>
 
-    <span th:fragment="picture-xs(picture)">
-        <span th:if="${picture != null}">
-            <img th:src="${picture.content})}" width="25" height="25" />
+    <span th:fragment="picture-xs(user)">
+        <span th:if="${user.picture != null}">
+            <img th:src="@{/profile/{uname}/picture/get(uname=${user.account.username})}" width="40" height="40" />
         </span>
-        <span th:if="${picture == null}">
-            <img th:src="@{/img/no-pic.png}" width="25" height="25" />
+        <span th:if="${user.picture == null}">
+            <img th:src="@{/img/no-pic.png}" width="40" height="40" />
         </span>
     </span>
+
+    <a th:fragment="picture-name-link(user)" th:href="@{/profile/{uname}/(uname=${user.account.username})}">
+        <span th:replace="fragments/fragments :: picture-sm(user=${user})" /><span th:text="${user.name}" />
+      </a>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

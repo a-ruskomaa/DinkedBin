@@ -13,10 +13,10 @@
     <section class="container mt-5 pt-5">
         <div class="row">
             <div class="col-lg-3">
-                <span th:replace="fragments/fragments :: picture-lg(picture=${user.picture})" />
+                <span th:replace="fragments/fragments :: picture-lg(user=${user})" />
             </div>
             <div class="col-md-9 my-auto">
-                <span class="h1" th:text="${user.name}">nimi</span>
+                <a th:href=@{/profile/{uname}(uname=${user.account.username})}><span class="h1" th:text="${user.name} ">nimi</span></a>
                 <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
                         <span th:unless="${#lists.contains(current.connections, user)}">
                           <span th:if="${#lists.contains(current.requestedConnections, user)}">

@@ -8,6 +8,7 @@ package projekti.dao;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import projekti.domain.Post;
 import projekti.domain.User;
@@ -17,5 +18,7 @@ import projekti.domain.User;
  * @author aleksi
  */
 public interface PostRepository extends JpaRepository<Post, Long> {
+    
+    @EntityGraph(attributePaths = {"comments"})
     public List<Post> findByUserIn(Collection<User> users, Pageable pageable);
 }

@@ -8,6 +8,7 @@ package projekti.domain;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -15,12 +16,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.WhereJoinTable;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -36,7 +40,9 @@ public class User extends AbstractPersistable<Long> {
 
     @OneToOne
     private Account account;
-
+    
+    @NotEmpty
+    @Size(min = 5, max = 50)
     private String name;
 
     @Lob
@@ -48,6 +54,13 @@ public class User extends AbstractPersistable<Long> {
     @Setter(AccessLevel.NONE)
     private List<User> connections;
 
+    /*
+    * A temporary method to list other users this user is connected to. Due to the
+    * symmetrical nature of the table where connections are stored, this user's
+    * user_id must match either the sender_id or recipient_id of a connection.
+    * Could not figure out how to map it using a custom "where id in A or B" style
+    * query, so this is a quick-n-dirty alternative.
+    */
     public List<User> getConnections() {
         this.connections = new ArrayList<User>();
         this.connections.addAll(getConnectedTo());
@@ -91,6 +104,7 @@ public class User extends AbstractPersistable<Long> {
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
     private List<User> receivedRequests = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Skill> skills;
+
 }

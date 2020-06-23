@@ -29,7 +29,7 @@
             <div class="row px-1 py-1">
                 <div class="col-md-1">
                     <a th:href="@{/profile/{uname}/(uname=${post.user.account.username})}">
-                        <span th:replace="fragments/fragments :: picture-sm(picture=${post.user.picture})" /></a>
+                        <span th:replace="fragments/fragments :: picture-sm(user=${post.user})" /></a>
                 </div>
                 <div class="col-md-11">
                     <div class="row">
@@ -51,12 +51,12 @@
                 <div class="col-md-11">
                     <div th:each="comment : ${post.comments}">
                         <div class="row">
-                            <div class="col-md-1">
+                            <div class="col-sm-1">
                                 <a th:href="@{/profile/{uname}/(uname=${comment.user.account.username})}">
                                     <span
-                                        th:replace="fragments/fragments :: picture-sm(picture=${comment.user.picture})" /></a>
+                                        th:replace="fragments/fragments :: picture-xs(user=${comment.user})" /></a>
                             </div>
-                            <div class="col-md-11">
+                            <div class="col-sm-11">
                                 <div class="row">
                                     <a th:href="@{/profile/{uname}/(uname=${comment.user.account.username})}"><span
                                             th:text="${comment.user.name}" />

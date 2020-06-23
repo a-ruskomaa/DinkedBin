@@ -16,6 +16,13 @@ import projekti.domain.User;
 import projekti.service.AccountService;
 import projekti.service.UserService;
 
+/**
+ * Controller class that handles user authentication on login and creating and adding new users.
+ * 
+ * Authentication credentials are stored as objects of type {@link projekti.domain.Account} and other user details in a separate
+ * object of type {@link projekti.domain.User}. User is dependent on Account.
+ * @author aleksi
+ */
 @Controller
 public class AccountController {
 
@@ -28,6 +35,7 @@ public class AccountController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    
     @GetMapping("/login")
     public String login() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -17,7 +17,7 @@ import projekti.service.ConnectionService;
 import projekti.service.UserService;
 
 /**
- *
+ * Controller class that handles getting and altering {@link projekti.domain.Connection}s between two distinct {@link projekti.domain.User}s.
  * @author aleksi
  */
 @Controller

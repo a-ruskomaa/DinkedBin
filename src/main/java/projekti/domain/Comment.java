@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +34,8 @@ public class Comment extends AbstractPersistable<Long>{
     
     private LocalDateTime dateTime;
     
+    @NotEmpty
+    @Size(min = 1, max = 4000)
     @Column(length = 4000)
     private String content;
 }
