@@ -27,9 +27,8 @@ import projekti.dao.SkillVoteRepository;
 import projekti.domain.ImageObject;
 import projekti.domain.Skill;
 import projekti.domain.SkillVote;
-import projekti.domain.User;
+import projekti.domain.Account;
 import projekti.service.AccountService;
-import projekti.service.UserService;
 
 /**
  *
@@ -37,9 +36,6 @@ import projekti.service.UserService;
  */
 @Controller
 public class ProfileController {
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     AccountService accountService;
@@ -66,18 +62,18 @@ public class ProfileController {
 
     @GetMapping("/profile/{username}")
     public String getProfile(Authentication authentication, Model model, @PathVariable("username") String username) {
-        User user = userService.fetch(username);
-        User current = null;
+        Account user = accountService.fetch(username);
+        Account current = null;
         Boolean isOwnProfile = false;
         Boolean isAuthenticated = false;
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
             isAuthenticated = true;
-            current = userService.fetch(authentication.getName());
+            current = accountService.fetch(authentication.getName());
             if (user.equals(current)) {
                 isOwnProfile = true;
             }
         }
-        List<Skill> topSkills = skillRepository.findTop3ByUserOrderByUpvotes(user);
+        List<Skill> topSkills = skillRepository.findTop3ByAccountOrderByUpvotes(user);
         model.addAttribute("user", user);
         model.addAttribute("current", current);
         model.addAttribute("isAuthenticated", isAuthenticated);
@@ -88,13 +84,13 @@ public class ProfileController {
 
     @GetMapping("/profile/{username}/skills")
     public String getProfileSkills(Authentication authentication, Model model, @PathVariable("username") String username) {
-        User user = userService.fetch(username);
-        User current = null;
+        Account user = accountService.fetch(username);
+        Account current = null;
         Boolean isOwnProfile = false;
         Boolean isAuthenticated = false;
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
             isAuthenticated = true;
-            current = userService.fetch(authentication.getName());
+            current = accountService.fetch(authentication.getName());
             if (user.equals(current)) {
                 isOwnProfile = true;
             }
@@ -112,7 +108,7 @@ public class ProfileController {
             System.out.println("You can't do that!");
             return "redirect:/profile";
         }
-        User u = userService.fetch(username);
+        Account u = accountService.fetch(username);
         Skill s = new Skill(u, skill, 0);
 
         skillRepository.save(s);
@@ -127,7 +123,7 @@ public class ProfileController {
             System.out.println("You can't do that!");
             return "redirect:/profile";
         }
-        User voter = userService.fetch(authentication.getName());
+        Account voter = accountService.fetch(authentication.getName());
 
         Skill skill = skillRepository.getOne(skillId);
 
@@ -153,7 +149,7 @@ public class ProfileController {
             System.out.println("You can't do that!");
             return "redirect:/profile";
         }
-        User u = userService.fetch(username);
+        Account u = accountService.fetch(username);
 
         if (file.getContentType() == null || !(file.getContentType().equals("image/jpeg"))) {
             System.out.println("Invalid file type");
@@ -167,7 +163,7 @@ public class ProfileController {
         newImage = imageRepository.save(newImage);
         u.setPicture(newImage);
         
-        userService.save(u);
+        accountService.save(u);
 
         return "redirect:/profile";
     }
@@ -175,7 +171,7 @@ public class ProfileController {
     @GetMapping(path = "/profile/{username}/picture/get", produces = "image/jpeg")
     @ResponseBody
     public byte[] getContent(@PathVariable("username") String username) {
-        User u = userService.fetch(username);
+        Account u = accountService.fetch(username);
         return u.getPicture().getContent();
     }
 }

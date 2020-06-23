@@ -16,7 +16,7 @@ import projekti.dao.CommentRepository;
 import projekti.dao.PostRepository;
 import projekti.domain.Comment;
 import projekti.domain.Post;
-import projekti.domain.User;
+import projekti.domain.Account;
 
 /**
  *
@@ -30,9 +30,9 @@ public class PostService {
     @Autowired
     CommentRepository commentRepository;
     
-    public List<Post> fetchLatestPostsByUsers(Collection<User> users, Integer posts) {
+    public List<Post> fetchLatestPostsByUsers(Collection<Account> users, Integer posts) {
         Pageable pageable = PageRequest.of(0, posts, Sort.by(Sort.Direction.DESC, "dateTime"));
-        return postRepository.findByUserIn(users, pageable);
+        return postRepository.findByAccountIn(users, pageable);
     }
 
     public Post save(Post post) {

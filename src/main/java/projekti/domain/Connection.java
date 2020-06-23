@@ -22,9 +22,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Connection extends AbstractPersistable<Long> {
     @OneToOne
-    private User sender;
+    private Account sender;
     @OneToOne
-    private User recipient;
+    private Account recipient;
     private Boolean isAccepted = false;
 //    private LocalDate connectedSince;
     

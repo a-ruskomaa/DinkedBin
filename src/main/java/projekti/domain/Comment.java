@@ -27,7 +27,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Comment extends AbstractPersistable<Long>{
     @ManyToOne
-    private User user;
+    private Account account;
     
     @ManyToOne
     private Post post;

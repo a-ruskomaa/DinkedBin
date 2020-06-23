@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projekti.dao.ConnectionRepository;
 import projekti.domain.Connection;
-import projekti.domain.User;
+import projekti.domain.Account;
 
 /**
  *
@@ -22,17 +22,17 @@ public class ConnectionService {
     ConnectionRepository connectionRepository;
     
     @Autowired
-    UserService userService;
+    AccountService accountService;
     
     public Connection create(String senderUsername, String recipientUsername) {
-        User sendingUser = userService.fetch(senderUsername);
+        Account sendingUser = accountService.fetch(senderUsername);
 
-        User receivingUser = userService.fetch(recipientUsername);
+        Account receivingUser = accountService.fetch(recipientUsername);
         
         return create(sendingUser, receivingUser);
     }
     
-    public Connection create(User sender, User recipient) {
+    public Connection create(Account sender, Account recipient) {
         Connection connection = new Connection(sender, recipient, Boolean.FALSE);
         
         return connectionRepository.save(connection);
@@ -44,16 +44,16 @@ public class ConnectionService {
     }
     
     public Connection accept(String senderUsername, String recipientUsername) {
-        User sender = userService.fetch(senderUsername);
+        Account sender = accountService.fetch(senderUsername);
 
-        User recipient = userService.fetch(recipientUsername);
+        Account recipient = accountService.fetch(recipientUsername);
         
         if (sender == null || recipient == null) throw new IllegalArgumentException();
         
         return accept(sender,recipient);
     }
     
-    public Connection accept(User sender, User recipient) {
+    public Connection accept(Account sender, Account recipient) {
         Connection c = fetch(sender, recipient);
         
         if (c == null) throw new IllegalArgumentException();
@@ -69,7 +69,7 @@ public class ConnectionService {
         return connectionRepository.getOne(id);
     }
     
-    public Connection fetch(User sender, User recipient) {
+    public Connection fetch(Account sender, Account recipient) {
         return connectionRepository.findBySenderAndRecipient(sender, recipient);
     }
     
@@ -77,7 +77,7 @@ public class ConnectionService {
         connectionRepository.delete(connection);
     }
     
-    public void remove(User first, User other) {        
+    public void remove(Account first, Account other) {        
         Connection c = fetch(first, other);
         
         if (c == null) {
@@ -90,9 +90,9 @@ public class ConnectionService {
     }
     
     public void remove(String usernameFirst, String usernameOther) {        
-        User first = userService.fetch(usernameFirst);
+        Account first = accountService.fetch(usernameFirst);
 
-        User other = userService.fetch(usernameOther);
+        Account other = accountService.fetch(usernameOther);
         
         if (first == null || other == null) throw new IllegalArgumentException();
         

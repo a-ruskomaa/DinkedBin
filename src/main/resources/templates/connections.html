@@ -22,9 +22,9 @@
               Has requested to connect
             </span>
             <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}"
-              th:value="${user.account.username}" type="submit">Accept</button>
+              th:value="${user.username}" type="submit">Accept</button>
             <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}"
-              th:value="${user.account.username}" type="submit">Decline</button>
+              th:value="${user.username}" type="submit">Decline</button>
           </span>
         </li>
       </ul>
@@ -36,7 +36,7 @@
               Connection requested
             </span>
             <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}"
-              th:value="${user.account.username}" type="submit">Cancel request</button>
+              th:value="${user.username}" type="submit">Cancel request</button>
           </span>
         </li>
       </ul>
@@ -44,7 +44,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <a th:replace="fragments/fragments :: picture-name-link(user=${user})"/>
           <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/remove}"
-            th:value="${user.account.username}" type="submit">Remove user</button>
+            th:value="${user.username}" type="submit">Remove user</button>
         </li>
       </ul>
     </form>

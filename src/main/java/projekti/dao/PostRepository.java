@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import projekti.domain.Post;
-import projekti.domain.User;
+import projekti.domain.Account;
 
 /**
  *
@@ -20,5 +20,5 @@ import projekti.domain.User;
 public interface PostRepository extends JpaRepository<Post, Long> {
     
     @EntityGraph(attributePaths = {"comments"})
-    public List<Post> findByUserIn(Collection<User> users, Pageable pageable);
+    public List<Post> findByAccountIn(Collection<Account> users, Pageable pageable);
 }

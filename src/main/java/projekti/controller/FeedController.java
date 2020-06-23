@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import projekti.domain.Comment;
 import projekti.domain.Post;
-import projekti.domain.User;
+import projekti.domain.Account;
+import projekti.service.AccountService;
 import projekti.service.PostService;
-import projekti.service.UserService;
 
 /**
  *
@@ -32,14 +32,14 @@ public class FeedController {
     PostService postService;
     
     @Autowired
-    UserService userService;
+    AccountService accountService;
     
     //TODO: tähän n+1 esto
     @GetMapping("/feed")
     public String getFeed(Model model, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
+        Account current = accountService.fetch(authentication.getName());
         
-        List<User> users = current.getConnections();
+        List<Account> users = current.getConnections();
         users.add(current);
         
         List<Post> posts = postService.fetchLatestPostsByUsers(users, 25);
@@ -52,7 +52,7 @@ public class FeedController {
     
     @PostMapping("/feed/post/add")
     public String addPost(Authentication authentication, @RequestParam("content") String content) {
-        User current = userService.fetch(authentication.getName());
+        Account current = accountService.fetch(authentication.getName());
         
         Post post = new Post(current, LocalDateTime.now(), content, new ArrayList<>());
         
@@ -63,7 +63,7 @@ public class FeedController {
     
     @PostMapping("/feed/post/{postid}/comments/add")
     public String addComment(Authentication authentication, @PathVariable("postid") Long postId, @RequestParam("content") String content) {
-        User current = userService.fetch(authentication.getName());
+        Account current = accountService.fetch(authentication.getName());
         
         Post post = postService.fetch(postId);
         

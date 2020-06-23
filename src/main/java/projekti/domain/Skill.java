@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Skill extends AbstractPersistable<Long> {
 
     @ManyToOne
-    private User user;
+    private Account account;
     private String name;
     
 //    @Formula("select count(voter_id) from skill_vote where skill_vote.id = id")

@@ -5,6 +5,7 @@
  */
 package projekti.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projekti.dao.AccountRepository;
@@ -20,7 +21,7 @@ public class AccountService {
     @Autowired
     AccountRepository accountRepository;
     
-    public Account create(Account account) {
+    public Account save(Account account) {
         return accountRepository.save(account);
     }
     
@@ -32,6 +33,8 @@ public class AccountService {
         return accountRepository.findByUsername(username);
     }
     
-    
+    public List<Account> search(String string) {
+        return accountRepository.findByNameContainingIgnoreCase(string);
+    }
     
 }

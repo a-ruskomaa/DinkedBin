@@ -73,7 +73,7 @@
     <!-- pictures-->
     <span th:fragment="picture-lg(user)" class="mr-4">
         <span th:if="${user.picture != null}">
-            <img th:src="@{/profile/{uname}/picture/get(uname=${user.account.username})}" width="200" height="200" />
+            <img th:src="@{/profile/{uname}/picture/get(uname=${user.username})}" width="200" height="200" />
         </span>
         <span th:if="${user.picture == null}">
             <img th:src="@{/img/no-pic.png}" width="200" height="200" />
@@ -82,7 +82,7 @@
 
     <span th:fragment="picture-sm(user)">
         <span th:if="${user.picture != null}">
-            <img th:src="@{/profile/{uname}/picture/get(uname=${user.account.username})}" width="50" height="50" />
+            <img th:src="@{/profile/{uname}/picture/get(uname=${user.username})}" width="50" height="50" />
         </span>
         <span th:if="${user.picture == null}">
             <img th:src="@{/img/no-pic.png}" width="50" height="50" />
@@ -91,14 +91,14 @@
 
     <span th:fragment="picture-xs(user)">
         <span th:if="${user.picture != null}">
-            <img th:src="@{/profile/{uname}/picture/get(uname=${user.account.username})}" width="40" height="40" />
+            <img th:src="@{/profile/{uname}/picture/get(uname=${user.username})}" width="40" height="40" />
         </span>
         <span th:if="${user.picture == null}">
             <img th:src="@{/img/no-pic.png}" width="40" height="40" />
         </span>
     </span>
 
-    <a th:fragment="picture-name-link(user)" th:href="@{/profile/{uname}/(uname=${user.account.username})}">
+    <a th:fragment="picture-name-link(user)" th:href="@{/profile/{uname}/(uname=${user.username})}">
         <span th:replace="fragments/fragments :: picture-sm(user=${user})" /><span th:text="${user.name}" />
       </a>
 

@@ -28,13 +28,13 @@
         <div th:each="post : ${posts}">
             <div class="row px-1 py-1">
                 <div class="col-md-1">
-                    <a th:href="@{/profile/{uname}/(uname=${post.user.account.username})}">
-                        <span th:replace="fragments/fragments :: picture-sm(user=${post.user})" /></a>
+                    <a th:href="@{/profile/{uname}/(uname=${post.account.username})}">
+                        <span th:replace="fragments/fragments :: picture-sm(user=${post.account})" /></a>
                 </div>
                 <div class="col-md-11">
                     <div class="row">
-                        <a th:href="@{/profile/{uname}/(uname=${post.user.account.username})}"><span
-                                th:text="${post.user.name}" />
+                        <a th:href="@{/profile/{uname}/(uname=${post.account.username})}"><span
+                                th:text="${post.account.name}" />
                         </a>
                     </div>
                     <div class="row">
@@ -52,13 +52,13 @@
                     <div th:each="comment : ${post.comments}">
                         <div class="row">
                             <div class="col-sm-1">
-                                <a th:href="@{/profile/{uname}/(uname=${comment.user.account.username})}">
+                                <a th:href="@{/profile/{uname}/(uname=${comment.user.username})}">
                                     <span
                                         th:replace="fragments/fragments :: picture-xs(user=${comment.user})" /></a>
                             </div>
                             <div class="col-sm-11">
                                 <div class="row">
-                                    <a th:href="@{/profile/{uname}/(uname=${comment.user.account.username})}"><span
+                                    <a th:href="@{/profile/{uname}/(uname=${comment.user.username})}"><span
                                             th:text="${comment.user.name}" />
                                     </a>
                                 </div>

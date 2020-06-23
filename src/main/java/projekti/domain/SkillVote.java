@@ -19,6 +19,6 @@ public class SkillVote extends AbstractPersistable<Long> {
     private Skill skill;
     
     @OneToOne
-    private User voter;
+    private Account voter;
 
 }

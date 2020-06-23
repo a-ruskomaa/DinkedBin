@@ -12,26 +12,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import projekti.domain.User;
+import projekti.domain.Account;
+import projekti.service.AccountService;
 import projekti.service.ConnectionService;
-import projekti.service.UserService;
 
 /**
- * Controller class that handles getting and altering {@link projekti.domain.Connection}s between two distinct {@link projekti.domain.User}s.
+ * Controller class that handles getting and altering {@link projekti.domain.Connection}s between two distinct {@link projekti.domain.Account}s.
  * @author aleksi
  */
 @Controller
 public class ConnectionController {
-
+    
     @Autowired
-    UserService userService;
+    AccountService accountService;
 
     @Autowired
     ConnectionService connectionService;
 
     @GetMapping("/connections")
     public String getConnections(Model model, Authentication authentication) {
-        User current = userService.fetch(authentication.getName());
+        Account current = accountService.fetch(authentication.getName());
         
         model.addAttribute("connections", current.getConnections());
         model.addAttribute("requests", current.getRequestedConnections()); 

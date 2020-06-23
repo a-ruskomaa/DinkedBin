@@ -24,7 +24,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.WhereJoinTable;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -36,10 +35,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @Data
 @Entity
-public class User extends AbstractPersistable<Long> {
+public class Account extends AbstractPersistable<Long> {
 
-    @OneToOne
-    private Account account;
+    @NotEmpty
+    @Size(min = 5, max = 30)
+    private String username;
+    
+    @NotEmpty
+    private String password;
     
     @NotEmpty
     @Size(min = 5, max = 50)
@@ -52,7 +55,7 @@ public class User extends AbstractPersistable<Long> {
     @Transient
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private List<User> connections;
+    private List<Account> connections;
 
     /*
     * A temporary method to list other users this user is connected to. Due to the
@@ -61,8 +64,8 @@ public class User extends AbstractPersistable<Long> {
     * Could not figure out how to map it using a custom "where id in A or B" style
     * query, so this is a quick-n-dirty alternative.
     */
-    public List<User> getConnections() {
-        this.connections = new ArrayList<User>();
+    public List<Account> getConnections() {
+        this.connections = new ArrayList<Account>();
         this.connections.addAll(getConnectedTo());
         this.connections.addAll(getConnectedFrom());
         return this.connections;
@@ -75,7 +78,7 @@ public class User extends AbstractPersistable<Long> {
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"),
             inverseJoinColumns
             = @JoinColumn(name = "recipient_id", referencedColumnName = "id"))
-    private List<User> connectedTo = new ArrayList<>();
+    private List<Account> connectedTo = new ArrayList<>();
 
     @ManyToMany
     @WhereJoinTable(clause = "is_accepted = true")
@@ -84,7 +87,7 @@ public class User extends AbstractPersistable<Long> {
             = @JoinColumn(name = "recipient_id", referencedColumnName = "id"),
             inverseJoinColumns
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
-    private List<User> connectedFrom = new ArrayList<>();
+    private List<Account> connectedFrom = new ArrayList<>();
 
     @ManyToMany
     @WhereJoinTable(clause = "is_accepted = false")
@@ -93,7 +96,7 @@ public class User extends AbstractPersistable<Long> {
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"),
             inverseJoinColumns
             = @JoinColumn(name = "recipient_id", referencedColumnName = "id"))
-    private List<User> requestedConnections = new ArrayList<>();
+    private List<Account> requestedConnections = new ArrayList<>();
 
     @ManyToMany
     @WhereJoinTable(clause = "is_accepted = false")
@@ -102,9 +105,9 @@ public class User extends AbstractPersistable<Long> {
             = @JoinColumn(name = "recipient_id", referencedColumnName = "id"),
             inverseJoinColumns
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
-    private List<User> receivedRequests = new ArrayList<>();
+    private List<Account> receivedRequests = new ArrayList<>();
     
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Skill> skills;
 
 }

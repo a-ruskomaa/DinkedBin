@@ -12,15 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import projekti.domain.User;
+import projekti.domain.Account;
 import projekti.service.AccountService;
-import projekti.service.UserService;
 
 /**
  * Controller class that handles user authentication on login and creating and adding new users.
  * 
- * Authentication credentials are stored as objects of type {@link projekti.domain.Account} and other user details in a separate
- * object of type {@link projekti.domain.User}. User is dependent on Account.
+ * Authentication credentials are stored as objects of type {@link projekti.domain.Account}
  * @author aleksi
  */
 @Controller
@@ -28,9 +26,6 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
-
-    @Autowired
-    UserService userService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -68,12 +63,11 @@ public class AccountController {
             return "redirect:/register?error";
         }
 
-        Account a = new Account(username, passwordEncoder.encode(password));
-        a = accountService.create(a);
-        User u = new User();
-        u.setAccount(a);
-        u.setName(name);
-        userService.save(u);
+        Account a = new Account();
+        a.setUsername(username);
+        a.setPassword(passwordEncoder.encode(password));
+        a.setName(name);
+        accountService.save(a);
         System.out.println("Adding new user:" + a.getUsername());
         return "redirect:/register?success";
     }

@@ -16,25 +16,25 @@
                 <span th:replace="fragments/fragments :: picture-lg(user=${user})" />
             </div>
             <div class="col-md-9 my-auto">
-                <a th:href=@{/profile/{uname}(uname=${user.account.username})}><span class="h1" th:text="${user.name} ">nimi</span></a>
-                <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
+                <a th:href=@{/profile/{uname}(uname=${user.username})}><span class="h1" th:text="${user.name} ">nimi</span></a>
+                <div th:unless="${#strings.equals(user.username, current.username)}">
                         <span th:unless="${#lists.contains(current.connections, user)}">
                           <span th:if="${#lists.contains(current.requestedConnections, user)}">
                             <span class="mr-2">
                               Connection requested
                             </span>
-                            <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.account.username}" type="submit">Cancel request</button>
+                            <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.username}" type="submit">Cancel request</button>
                           </span>
                           <span th:if="${#lists.contains(current.receivedRequests, user)}">
                             <span class="mr-3">
                               Has requested to connect
                             </span>
-                            <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.account.username}" type="submit">Accept</button>
-                            <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.account.username}" type="submit">Decline</button>
+                            <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.username}" type="submit">Accept</button>
+                            <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.username}" type="submit">Decline</button>
                           </span>
                           <span th:unless="${#lists.contains(current.requestedConnections, user)}">
                             <span th:unless="${#lists.contains(current.receivedRequests, user)}">
-                            <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.account.username}" type="submit">Request connection</button>
+                            <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.username}" type="submit">Request connection</button>
                             </span>
                           </span>
                         </span>
@@ -59,7 +59,7 @@
                             <span>
                                 <span class="badge badge-primary badge-pill" th:text="${skill.upvotes}" />
                                 <a th:unless="${isOwnProfile}"
-                                    th:href="@{/profile/{uname}/skills/{id}/vote(uname=${user.account.username},id=${skill.id})}">
+                                    th:href="@{/profile/{uname}/skills/{id}/vote(uname=${user.username},id=${skill.id})}">
                                     &#128077;
                                 </a>
                             </span>
@@ -68,7 +68,7 @@
                     <div th:if="${isOwnProfile == true}">
                         <div class="form-group">
                             <form method="post"
-                                th:action="@{/profile/{uname}/skills/add(uname=${user.account.username})}">
+                                th:action="@{/profile/{uname}/skills/add(uname=${user.username})}">
                                 <input class="form-control mr-sm-1" type="text" name="skill" placeholder="New skill">
                                 <button class="btn btn-success mr-0 ml-auto" type="submit">Add</button>
                             </form>

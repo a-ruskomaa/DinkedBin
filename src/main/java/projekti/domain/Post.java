@@ -29,7 +29,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Post extends AbstractPersistable<Long>{
     @ManyToOne
-    private User user;
+    private Account account;
     
     private LocalDateTime dateTime;
     

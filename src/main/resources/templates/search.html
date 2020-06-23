@@ -19,7 +19,7 @@
 
       <form method="post">
       <ul class="list-group" th:each="user : ${results}">
-        <div th:unless="${#strings.equals(user.account.username, current.account.username)}">
+        <div th:unless="${#strings.equals(user.username, current.username)}">
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <a th:replace="fragments/fragments :: picture-name-link(user=${user})"/>
             <span th:unless="${#lists.contains(current.connections, user)}">
@@ -27,18 +27,18 @@
                 <span class="mr-2">
                   Connection requested
                 </span>
-                <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.account.username}" type="submit">Cancel request</button>
+                <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.username}" type="submit">Cancel request</button>
               </span>
               <span th:if="${#lists.contains(current.receivedRequests, user)}">
                 <span class="mr-3">
                   Has requested to connect
                 </span>
-                <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.account.username}" type="submit">Accept</button>
-                <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.account.username}" type="submit">Decline</button>
+                <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.username}" type="submit">Accept</button>
+                <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.username}" type="submit">Decline</button>
               </span>
               <span th:unless="${#lists.contains(current.requestedConnections, user)}">
                 <span th:unless="${#lists.contains(current.receivedRequests, user)}">
-                <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.account.username}" type="submit">Request connection</button>
+                <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.username}" type="submit">Request connection</button>
                 </span>
               </span>
           </li>
