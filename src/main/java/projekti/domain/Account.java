@@ -7,6 +7,7 @@ package projekti.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -38,7 +40,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Account extends AbstractPersistable<Long> {
 
     @NotEmpty
-    @Size(min = 5, max = 30)
+    @Column(unique=true)
+    @Size(max = 30)
     private String username;
     
     @NotEmpty

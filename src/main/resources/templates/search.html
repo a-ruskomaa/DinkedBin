@@ -12,10 +12,6 @@
   <section class="container pt-5 mt-5">
 
     <h2>Search results for "<span th:text="${query}" />" :</h2>
-    <!--form th:action="@{/search}" method="GET">
-        <input type="text" name="query" id="query"/>
-        <input type="submit">Search</input>
-      </form-->
 
       <form method="post">
       <ul class="list-group" th:each="user : ${results}">

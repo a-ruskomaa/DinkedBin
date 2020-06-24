@@ -14,23 +14,23 @@
         <div th:if="${param.success}" class="alert alert-success">
             User account created. Please log in <a th:href="@{/login}">here</a>.
         </div>
-        <form th:if="${param.success == null}" th:action="@{/register}" th:method="POST">
+        <form th:if="${param.success == null}" th:action="@{/register}" th:object="${account}" th:method="POST">
             <fieldset>
                 <legend>New user:</legend>
-                <div th:if="${param.error}" class="alert alert-error" role="alert">
-                    Username already in use.
-                </div>
                 <div class="col-xs-2">
                     <label for="name">Name</label>
                     <input class="form-control mb-2 mr-sm-2 col-xs-2" type="text" id="name" name="name" />
+                    <div th:if="${#fields.hasErrors('name')}" class="alert alert-danger" role="alert"  th:errors="*{name}">Name errormsg</div>
                 </div>
                 <div class="col-xs-2">
                     <label for="username">Username</label>
                     <input class="form-control mb-2 mr-sm-2 col-xs-2" type="text" id="username" name="username" />
+                    <div th:if="${#fields.hasErrors('username')}" class="alert alert-danger" role="alert" th:errors="*{username}">Username errormsg</div>
                 </div>
                 <div class="col-xs-2">
                     <label for="password">Password</label>
                     <input class="form-control mb-2 mr-sm-2 col-xs-2" type="password" id="password" name="password" />
+                    <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" role="alert" th:errors="*{password}">Password errormsg</div>
                 </div>
                 <div class="form-actions">
                     <button class="btn btn-primary mb-2" type="submit">Register</button>
