@@ -20,6 +20,7 @@
                 <span class="h1" th:text="${user.name}">nimi</span>
                 <div th:if="${isOwnProfile == false}">
                     <span th:unless="${#lists.contains(current.connections, user)}">
+                        <form method="POST">
                           <span th:if="${#lists.contains(current.requestedConnections, user)}">
                             <span class="mr-2">
                               Connection requested
@@ -38,6 +39,7 @@
                             <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.username}" type="submit">Request connection</button>
                             </span>
                           </span>
+                        </form>
                         </span>
                     </div>
             </div>

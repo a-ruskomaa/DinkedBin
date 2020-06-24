@@ -7,6 +7,7 @@ package projekti.controller;
 
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -103,7 +104,7 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/{username}/skills/add")
-    public String addSkill(Authentication authentication, @PathVariable("username") String username, @RequestParam("skill") String skill) {
+    public String addSkill(Authentication authentication, @PathVariable("username") String username, @RequestParam("skill") String skill, HttpServletRequest request) {
         if (!authentication.getName().equals(username)) {
             System.out.println("You can't do that!");
             return "redirect:/profile";
@@ -119,12 +120,14 @@ public class ProfileController {
 
         skillRepository.save(s);
 
-        return "redirect:/profile/" + username;
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
 
     @Transactional
     @GetMapping("/profile/{username}/skills/{id}/vote")
-    public String voteSkill(Authentication authentication, @PathVariable("username") String username, @PathVariable("id") Long skillId) {
+    public String voteSkill(Authentication authentication, @PathVariable("username") String username, @PathVariable("id") Long skillId, HttpServletRequest request) {
         if (authentication instanceof AnonymousAuthenticationToken || authentication.getName().equals(username)) {
             System.out.println("You can't do that!");
             return "redirect:/profile";
@@ -144,8 +147,10 @@ public class ProfileController {
         skill.setUpvotes(skill.getUpvotes() + 1);
 
         skillRepository.save(skill);
-
-        return "redirect:/profile/" + username;
+        
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
 
     @Transactional
@@ -164,7 +169,9 @@ public class ProfileController {
         }
 
         ImageObject oldImage = u.getPicture();
-        imageRepository.delete(oldImage);
+        if (oldImage != null) {
+            imageRepository.delete(oldImage);
+        }
         
         ImageObject newImage = new ImageObject(file.getBytes());
         newImage = imageRepository.save(newImage);

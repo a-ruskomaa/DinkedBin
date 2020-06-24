@@ -5,6 +5,7 @@
  */
 package projekti.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -41,38 +42,48 @@ public class ConnectionController {
     }
 
     @PostMapping("/connections/request")
-    public String requestConnection(@RequestParam String username, Authentication authentication) {
+    public String requestConnection(@RequestParam String username, Authentication authentication, HttpServletRequest request) {
         connectionService.create(authentication.getName(), username);
 
-        return "redirect:/connections";
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
     
     @PostMapping("/connections/cancel")
-    public String cancelRequest(@RequestParam String username, Authentication authentication) {
+    public String cancelRequest(@RequestParam String username, Authentication authentication, HttpServletRequest request) {
         connectionService.remove(authentication.getName(), username);
 
-        return "redirect:/connections";
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
     
     @PostMapping("/connections/accept")
-    public String acceptRequest(@RequestParam String username, Authentication authentication) {
+    public String acceptRequest(@RequestParam String username, Authentication authentication, HttpServletRequest request) {
         connectionService.accept(username, authentication.getName());
 
-        return "redirect:/connections";
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
 
     @PostMapping("/connections/decline")
-    public String declineRequest(@RequestParam String username, Authentication authentication) {
+    public String declineRequest(@RequestParam String username, Authentication authentication, HttpServletRequest request) {
         connectionService.remove(username, authentication.getName());
 
-        return "redirect:/connections";
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
     
     @PostMapping("/connections/remove")
-    public String removeConnection(@RequestParam String username, Authentication authentication) {
+    public String removeConnection(@RequestParam String username, Authentication authentication, HttpServletRequest request) {
         connectionService.remove(authentication.getName(), username);
 
-        return "redirect:/connections";
+        String referer = request.getHeader("Referer");
+        
+        return "redirect:" + referer;
     }
 
 }
