@@ -108,6 +108,12 @@ public class ProfileController {
             System.out.println("You can't do that!");
             return "redirect:/profile";
         }
+        
+        if (skill.isEmpty() || skill.isBlank() || skill.length() > 255) {
+            System.out.println("Invalid skill text!");
+            return "redirect:/profile/" + username + "/skills";
+        }
+        
         Account u = accountService.fetch(username);
         Skill s = new Skill(u, skill, 0);
 
@@ -144,7 +150,7 @@ public class ProfileController {
 
     @Transactional
     @PostMapping("/profile/{username}/picture/upload")
-    public String uploadPicture(Authentication authentication, @PathVariable("username") String username, @RequestParam("file") MultipartFile file) throws IOException {
+    public String uploadPicture(Authentication authentication, Model model, @PathVariable("username") String username, @RequestParam("file") MultipartFile file) throws IOException {
         if (!authentication.getName().equals(username)) {
             System.out.println("You can't do that!");
             return "redirect:/profile";
@@ -153,6 +159,7 @@ public class ProfileController {
 
         if (file.getContentType() == null || !(file.getContentType().equals("image/jpeg"))) {
             System.out.println("Invalid file type");
+            model.addAttribute("fileError", "Invalid file type");
             return "redirect:/profile";
         }
 

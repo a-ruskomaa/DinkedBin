@@ -47,6 +47,7 @@
                 <div th:if="${isOwnProfile == true}">
                     <form th:action="@{/profile/{uname}/picture/upload(uname=${user.username})}" id="upload_form" method="post" enctype="multipart/form-data">
                         <input type="file" id="file" name="file">
+                        <div th:if="${fileError}" class="alert alert-danger" role="alert" th:text="$fileError"></div>
                         <input type="submit" accept="image/jpeg" value="Upload new picture">
                     </form>
                 </div>
