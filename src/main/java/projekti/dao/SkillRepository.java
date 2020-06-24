@@ -16,5 +16,5 @@ import projekti.domain.Account;
  */
 public interface SkillRepository extends JpaRepository<Skill, Long> {
     
-    List<Skill> findTop3ByAccountOrderByUpvotes(Account user);
+    List<Skill> findTop3ByAccountOrderByUpvotesDesc(Account user);
 }

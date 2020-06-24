@@ -74,7 +74,7 @@ public class ProfileController {
                 isOwnProfile = true;
             }
         }
-        List<Skill> topSkills = skillRepository.findTop3ByAccountOrderByUpvotes(user);
+        List<Skill> topSkills = skillRepository.findTop3ByAccountOrderByUpvotesDesc(user);
         model.addAttribute("user", user);
         model.addAttribute("current", current);
         model.addAttribute("isAuthenticated", isAuthenticated);
