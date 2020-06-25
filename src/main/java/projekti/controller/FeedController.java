@@ -23,7 +23,7 @@ import projekti.service.AccountService;
 import projekti.service.PostService;
 
 /**
- *
+ * Controller class that handles getting and adding posts, comments and likes
  * @author aleksi
  */
 @Controller

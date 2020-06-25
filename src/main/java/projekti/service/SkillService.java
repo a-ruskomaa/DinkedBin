@@ -32,8 +32,8 @@ public class SkillService {
     
     public Skill add(String username, String skill) {
         
-        Account u = accountService.fetch(username);
-        Skill s = new Skill(u, skill, 0);
+        Account account = accountService.fetch(username);
+        Skill s = new Skill(account, skill, 0);
 
         return skillRepository.save(s);
     }
@@ -53,9 +53,9 @@ public class SkillService {
             return skill;
         }
 
-        SkillVote sv = new SkillVote(skill, voter);
+        SkillVote skillvote = new SkillVote(skill, voter);
 
-        skillVoteRepository.save(sv);
+        skillVoteRepository.save(skillvote);
 
         skill.setUpvotes(skill.getUpvotes() + 1);
 

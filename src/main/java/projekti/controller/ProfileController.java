@@ -23,17 +23,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import projekti.dao.ImageRepository;
-import projekti.dao.SkillRepository;
-import projekti.dao.SkillVoteRepository;
 import projekti.domain.ImageObject;
 import projekti.domain.Skill;
-import projekti.domain.SkillVote;
 import projekti.domain.Account;
 import projekti.service.AccountService;
 import projekti.service.SkillService;
 
 /**
- *
+ * Controller class that handles actions regarding user profiles, such as adding skills,
+ * uploading pictures and giving upvotes for other users' skills.
  * @author aleksi
  */
 @Controller
@@ -181,5 +179,4 @@ public class ProfileController {
         return u.getPicture().getContent();
     }
     
-    //private Model checkAuthorization();
 }

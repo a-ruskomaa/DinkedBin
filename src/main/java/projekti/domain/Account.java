@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -54,6 +53,9 @@ public class Account extends AbstractPersistable<Long> {
     @Lob
     @OneToOne
     private ImageObject picture;
+    
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List<Skill> skills;
 
     @Transient
     @Getter(AccessLevel.NONE)
@@ -109,8 +111,5 @@ public class Account extends AbstractPersistable<Long> {
             inverseJoinColumns
             = @JoinColumn(name = "sender_id", referencedColumnName = "id"))
     private List<Account> receivedRequests = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    private List<Skill> skills;
 
 }

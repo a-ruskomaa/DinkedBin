@@ -1,117 +1,115 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/fragments :: head">
-    <meta charset="UTF-8" />
-    <title>Profile</title>
-</head>
+    <head th:replace="fragments/fragments :: head">
+        <meta charset="UTF-8" />
+        <title>Profile</title>
+    </head>
 
-<body>
-    <nav th:replace="fragments/fragments :: nav" />
+    <body>
+        <nav th:replace="fragments/fragments :: nav" />
 
-    <!-- Profile picture and name-->
-    <section class="container mt-5 pt-5">
-        <div class="row">
-            <div class="col-lg-3">
-                <span th:replace="fragments/fragments :: picture-lg(user=${user})" />
-
-            </div>
-            <div class="col-md-9 my-auto">
-                <span class="h1" th:text="${user.name}">nimi</span>
-                <div th:if="${isOwnProfile == false}">
-                    <span th:unless="${#lists.contains(current.connections, user)}">
-                        <form method="POST">
-                          <span th:if="${#lists.contains(current.requestedConnections, user)}">
-                            <span class="mr-2">
-                              Connection requested
-                            </span>
-                            <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.username}" type="submit">Cancel request</button>
-                          </span>
-                          <span th:if="${#lists.contains(current.receivedRequests, user)}">
-                            <span class="mr-3">
-                              Has requested to connect
-                            </span>
-                            <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.username}" type="submit">Accept</button>
-                            <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.username}" type="submit">Decline</button>
-                          </span>
-                          <span th:unless="${#lists.contains(current.requestedConnections, user)}">
-                            <span th:unless="${#lists.contains(current.receivedRequests, user)}">
-                            <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.username}" type="submit">Request connection</button>
-                            </span>
-                          </span>
-                        </form>
-                        </span>
-                    </div>
-            </div>
+        <!-- Profile picture and name-->
+        <section class="container mt-5 pt-5">
             <div class="row">
+                <div class="col-lg-3">
+                    <span th:replace="fragments/fragments :: picture-lg(user=${user})" />
 
-            <div class="col-lg-3">
-                <div th:if="${isOwnProfile == true}">
-                    <form th:action="@{/profile/{uname}/picture/upload(uname=${user.username})}" id="upload_form" method="post" enctype="multipart/form-data">
-                        <input type="file" id="file" name="file">
-                        <div th:if="${fileError}" class="alert alert-danger" role="alert" th:text="$fileError"></div>
-                        <input type="submit" accept="image/jpeg" value="Upload new picture">
-                    </form>
                 </div>
-            </div>
-            </div>
-        </div>
-    </section>
-    <!-- Skills -->
-    <section class="container mt-5">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="row">
-                    <a class="h3" th:href="@{/profile/{uname}/skills/(uname=${user.username})}">Skills</a>
-                </div>
-                <div class="row d-flex mr-2 ">
-
-                    <ul class="list-group w-100" th:each="skill : ${topSkills}">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span th:text="${skill.name}" />
-                            <span>
-                                <span class="badge badge-primary badge-pill" th:text="${skill.upvotes}" />
-                                <a th:unless="${isOwnProfile}"
-                                    th:href="@{/profile/{uname}/skills/{id}/vote(uname=${user.username},id=${skill.id})}">
-                                    &#128077;
-                                </a>
+                <div class="col-md-9 my-auto">
+                    <span class="h1" th:text="${user.name}">nimi</span>
+                    <div th:if="${isOwnProfile == false}">
+                        <form method="POST">
+                            <span th:unless="${#lists.contains(current.connections, user)}">
+                                <span th:if="${#lists.contains(current.requestedConnections, user)}">
+                                    <span class="mr-2">
+                                        Connection requested
+                                    </span>
+                                    <button class="btn btn-sm btn-dark ml-5" name="username" th:formaction="@{/connections/cancel}" th:value="${user.username}" type="submit">Cancel request</button>
+                                </span>
+                                <span th:if="${#lists.contains(current.receivedRequests, user)}">
+                                    <span class="mr-3">
+                                        Has requested to connect
+                                    </span>
+                                    <button class="btn btn-sm btn-success" name="username" th:formaction="@{/connections/accept}" th:value="${user.username}" type="submit">Accept</button>
+                                    <button class="btn btn-sm btn-danger" name="username" th:formaction="@{/connections/decline}" th:value="${user.username}" type="submit">Decline</button>
+                                </span>
+                                <span th:unless="${#lists.contains(current.requestedConnections, user)}">
+                                    <span th:unless="${#lists.contains(current.receivedRequests, user)}">
+                                        <button class="btn btn-sm btn-dark" name="username" th:formaction="@{/connections/request}" th:value="${user.username}" type="submit">Request connection</button>
+                                    </span>
+                                </span>
                             </span>
-                        </li>
-                    </ul>
-
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-9  my-auto">
                 <div class="row">
-                    <span class="h2">Bio</span>
-                </div>
-                <div class="row d-flex my-auto">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra
-                        metus fringilla sit amet. Nam vitae mollis libero. Suspendisse potenti. Mauris nec feugiat
-                        est.
-                        Aenean at odio eget nisl facilisis fermentum. Pellentesque accumsan, massa vel elementum
-                        semper,
-                        sapien massa eleifend eros, ac blandit urna dolor at ante. Pellentesque facilisis ipsum ut
-                        nulla
-                        suscipit, nec tristique dui porttitor. Nulla ac justo et sapien efficitur pharetra nec et
-                        ex.
-                    </p>
+
+                    <div class="col-lg-3">
+                        <div th:if="${isOwnProfile == true}">
+                            <form th:action="@{/profile/{uname}/picture/upload(uname=${user.username})}" id="upload_form" method="post" enctype="multipart/form-data">
+                                <input type="file" id="file" name="file"/>
+                                <div th:if="${fileError}" class="alert alert-danger" role="alert" th:text="$fileError"></div>
+                                <input type="submit" value="Upload new picture"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+        <!-- Skills -->
+        <section class="container mt-5">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="row">
+                        <a class="h3" th:href="@{/profile/{uname}/skills/(uname=${user.username})}">Skills</a>
+                    </div>
+                    <div class="row d-flex mr-2 ">
 
-        </div>
-    </section>
-    <!-- Connections
-    <section class="container mt-5">
-        <div class="row">
-            <h2>Connections</h2>
-        </div>
-    </section>
-    -->
+                        <ul class="list-group w-100" th:each="skill : ${topSkills}">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span th:text="${skill.name}" />
+                                <span>
+                                    <span class="badge badge-primary badge-pill" th:text="${skill.upvotes}" />
+                                    <a th:unless="${isOwnProfile}"
+                                       th:href="@{/profile/{uname}/skills/{id}/vote(uname=${user.username},id=${skill.id})}">
+                                        &#128077;
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="col-md-9  my-auto">
+                    <div class="row">
+                        <span class="h2">Bio</span>
+                    </div>
+                    <div class="row d-flex my-auto">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras commodo sodales leo, at viverra
+                            metus fringilla sit amet. Nam vitae mollis libero. Suspendisse potenti. Mauris nec feugiat
+                            est.
+                            Aenean at odio eget nisl facilisis fermentum. Pellentesque accumsan, massa vel elementum
+                            semper,
+                            sapien massa eleifend eros, ac blandit urna dolor at ante. Pellentesque facilisis ipsum ut
+                            nulla
+                            suscipit, nec tristique dui porttitor. Nulla ac justo et sapien efficitur pharetra nec et
+                            ex.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Connections
+        <section class="container mt-5">
+            <div class="row">
+                <h2>Connections</h2>
+            </div>
+        </section>
+        -->
 
 
-    <div th:replace="fragments/fragments :: scripts"></div>
-</body>
+        <div th:replace="fragments/fragments :: scripts"></div>
+    </body>
 
 </html>

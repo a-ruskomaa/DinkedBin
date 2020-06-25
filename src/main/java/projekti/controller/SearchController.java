@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import projekti.domain.Account;
 import projekti.service.AccountService;
 
+/**
+ * Controller class that handles search queries
+ * @author aleksi
+ */
 @Controller
 public class SearchController {
     

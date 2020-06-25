@@ -12,7 +12,7 @@ import projekti.domain.Comment;
 import projekti.domain.Post;
 
 /**
- *
+ * 
  * @author aleksi
  */
 public interface CommentRepository extends JpaRepository<Comment, Long> {

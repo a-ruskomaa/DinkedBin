@@ -2,7 +2,6 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head th:replace="fragments/fragments :: head">
-        </div>
         <meta charset="UTF-8" />
         <title>Login</title>
     </head>
@@ -46,10 +45,8 @@
                     </div>
                 </div>
                 <div class="row px-3 pb-3">
-                        <em>This post has been liked <span class="badge badge-primary badge-pill" th:text="${post.likes}" /> times. </em>
-                        <a th:href="@{/feed/post/{postid}/like(postid=${post.id})}">
-                            I like this &#128077;!
-                        </a>
+                    <em>This post has been liked <span class="badge badge-primary badge-pill" th:text="${post.likes}" /> times.</em>
+                    <a th:href="@{/feed/post/{postid}/like(postid=${post.id})}">&nbsp;Click here if you like it too &#128077;!</a>
                 </div>
                 <div class="row">
                     <div class="col-md-1">

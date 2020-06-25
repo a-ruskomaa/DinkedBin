@@ -54,11 +54,11 @@ public class ConnectionService {
     }
     
     public Connection accept(Account sender, Account recipient) {
-        Connection c = fetch(sender, recipient);
+        Connection connection = fetch(sender, recipient);
         
-        if (c == null) throw new IllegalArgumentException();
+        if (connection == null) throw new IllegalArgumentException();
         
-        return accept(c);
+        return accept(connection);
     }
     
     public Connection save(Connection connection) {
@@ -78,15 +78,15 @@ public class ConnectionService {
     }
     
     public void remove(Account first, Account other) {        
-        Connection c = fetch(first, other);
+        Connection connection = fetch(first, other);
         
-        if (c == null) {
-            c = fetch(other, first);
+        if (connection == null) {
+            connection = fetch(other, first);
         }
         
-        if (c == null) throw new IllegalArgumentException();
+        if (connection == null) throw new IllegalArgumentException();
         
-        remove(c);
+        remove(connection);
     }
     
     public void remove(String usernameFirst, String usernameOther) {        
