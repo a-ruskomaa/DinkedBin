@@ -14,8 +14,9 @@
         <form name="f" th:action="@{/processlogin}" method="post">
             <fieldset>
                 <legend>Please Login</legend>
-                <div th:if="${param.error}" class="alert alert-error">
-                    Invalid username and password.
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger" role="alert">
+                        Invalid username and/or password.</div>
                 </div>
                 <div th:if="${param.logout}" class="alert alert-success">
                     You have been logged out.

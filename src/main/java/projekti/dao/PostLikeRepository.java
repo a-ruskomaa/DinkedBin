@@ -5,16 +5,15 @@
  */
 package projekti.dao;
 
-import java.util.List;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import projekti.domain.Comment;
 import projekti.domain.Post;
+import projekti.domain.PostLike;
+import projekti.domain.Account;
 
 /**
  *
  * @author aleksi
  */
-public interface CommentRepository extends JpaRepository<Comment, Long> {
-    public List<Comment> findByPost(Post post, Pageable pageable);
+public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
+    public PostLike findByPostAndLiker(Post post, Account liker);
 }

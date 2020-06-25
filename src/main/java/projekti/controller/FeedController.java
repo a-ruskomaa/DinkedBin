@@ -6,9 +6,9 @@
 package projekti.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,10 +56,14 @@ public class FeedController {
             System.out.println("Invalid content!");
             return "redirect:/feed";
         }
-        
+
         Account current = accountService.fetch(authentication.getName());
 
-        Post post = new Post(current, LocalDateTime.now(), content, new ArrayList<>());
+        Post post = new Post();
+        post.setAccount(current);
+        post.setContent(content);
+        post.setDateTime(LocalDateTime.now());
+        post.setLikes(0);
 
         postService.save(post);
 
@@ -72,7 +76,7 @@ public class FeedController {
             System.out.println("Invalid content!");
             return "redirect:/feed";
         }
-        
+
         Account current = accountService.fetch(authentication.getName());
 
         Post post = postService.fetch(postId);
@@ -80,6 +84,22 @@ public class FeedController {
         Comment comment = new Comment(current, post, LocalDateTime.now(), content);
 
         postService.saveComment(comment);
+
+        return "redirect:/feed";
+    }
+    
+    
+    @GetMapping("/feed/post/{postid}/like")
+    public String likePost(Authentication authentication, @PathVariable("postid") Long id) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            System.out.println("You can't do that!");
+            return "redirect:/profile";
+        }
+        Account voter = accountService.fetch(authentication.getName());
+
+        Post post = postService.fetch(id);
+
+        postService.addLike(post, voter);
 
         return "redirect:/feed";
     }

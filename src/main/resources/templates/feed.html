@@ -1,97 +1,103 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/fragments :: head">
-    </div>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-</head>
-
-<body>
-    <nav th:replace="fragments/fragments :: nav" />
-
-    <div class="container">
-        <h1>Feed</h1>
-
-        <div class="row px-3 py-3">
-            <div class="form">
-                <form method="post" th:action="@{/feed/post/add}">
-                    <div class="form-group">
-                        <textarea class="form-control mr-sm-1" rows="8" cols="120" name="content"
-                            placeholder="New post"></textarea>
-                        <button class="btn btn-success mr-0 ml-auto" type="submit">Add</button>
-                    </div>
-                </form>
-            </div>
+    <head th:replace="fragments/fragments :: head">
         </div>
+        <meta charset="UTF-8" />
+        <title>Login</title>
+    </head>
 
-        <div th:each="post : ${posts}">
-            <div class="row px-1 py-1">
-                <div class="col-md-1">
-                    <a th:href="@{/profile/{uname}/(uname=${post.account.username})}">
-                        <span th:replace="fragments/fragments :: picture-sm(user=${post.account})" /></a>
-                </div>
-                <div class="col-md-11">
-                    <div class="row">
-                        <a th:href="@{/profile/{uname}/(uname=${post.account.username})}"><span
-                                th:text="${post.account.name}" />
-                        </a>
-                    </div>
-                    <div class="row">
-                        <span th:text="${#temporals.format(post.dateTime, 'yyyy-MM-dd HH:mm')}">aika</span>
-                    </div>
-                </div>
-                <div class="row px-4 py-1">
-                    <p th:text="${post.content}">sisältö</p>
+    <body>
+        <nav th:replace="fragments/fragments :: nav" />
+
+        <div class="container">
+            <h1>Feed</h1>
+
+            <div class="row px-3 py-3">
+                <div class="form">
+                    <form method="post" th:action="@{/feed/post/add}">
+                        <div class="form-group">
+                            <textarea class="form-control mr-sm-1" rows="8" cols="120" name="content"
+                                      placeholder="New post"></textarea>
+                            <button class="btn btn-success mr-0 ml-auto" type="submit">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-11">
-                    <div th:each="comment : ${post.comments}">
+
+            <div th:each="post : ${posts}">
+                <div class="row px-1 py-1">
+                    <div class="col-md-1">
+                        <a th:href="@{/profile/{uname}/(uname=${post.account.username})}">
+                            <span th:replace="fragments/fragments :: picture-sm(user=${post.account})" /></a>
+                    </div>
+                    <div class="col-md-11">
                         <div class="row">
-                            <div class="col-sm-1">
-                                <a th:href="@{/profile/{uname}/(uname=${comment.account.username})}">
-                                    <span
-                                        th:replace="fragments/fragments :: picture-xs(user=${comment.user})" /></a>
-                            </div>
-                            <div class="col-sm-11">
-                                <div class="row">
-                                    <a th:href="@{/profile/{uname}/(uname=${comment.account.username})}"><span
-                                            th:text="${comment.user.name}" />
-                                    </a>
+                            <a th:href="@{/profile/{uname}/(uname=${post.account.username})}"><span
+                                    th:text="${post.account.name}" />
+                            </a>
+                        </div>
+                        <div class="row">
+                            <span th:text="${#temporals.format(post.dateTime, 'yyyy-MM-dd HH:mm')}">aika</span>
+                        </div>
+                    </div>
+                    <div class="row px-4 pt-1">
+                        <p th:text="${post.content}">sisältö</p>
+                    </div>
+                </div>
+                <div class="row px-3 pb-3">
+                        <em>This post has been liked <span class="badge badge-primary badge-pill" th:text="${post.likes}" /> times.</em>
+                        <a th:href="@{/feed/post/{postid}/like(postid=${post.id})}">
+                            I like this &#128077;
+                        </a>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-11">
+                        <div th:each="comment : ${post.comments}">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <a th:href="@{/profile/{uname}/(uname=${comment.account.username})}">
+                                        <span
+                                            th:replace="fragments/fragments :: picture-xs(user=${comment.account})" /></a>
                                 </div>
-                                <div class="row">
-                                    <span th:text="${#temporals.format(comment.dateTime, 'yyyy-MM-dd HH:mm')}">aika</span>
+                                <div class="col-sm-11">
+                                    <div class="row">
+                                        <a th:href="@{/profile/{uname}/(uname=${comment.account.username})}"><span
+                                                th:text="${comment.account.name}" />
+                                        </a>
+                                    </div>
+                                    <div class="row">
+                                        <span th:text="${#temporals.format(comment.dateTime, 'yyyy-MM-dd HH:mm')}">aika</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row px-4 py-1">
-                                <p th:text="${comment.content}">sisältö</p>
+                                <div class="row px-4 py-1">
+                                    <p th:text="${comment.content}">sisältö</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-11">
-                    <div class="form">
-                        <form method="post" th:action="@{/feed/post/{postid}/comments/add(postid=${post.id})}">
-                            <div class="form-group">
-                                <textarea class="form-control mr-sm-1" rows="4" cols="80" name="content"
-                                    placeholder="New comment"></textarea>
-                                <button class="btn btn-success mr-0 ml-auto" type="submit">Add</button>
-                            </div>
-                        </form>
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-11">
+                        <div class="form">
+                            <form method="post" th:action="@{/feed/post/{postid}/comments/add(postid=${post.id})}">
+                                <div class="form-group">
+                                    <textarea class="form-control mr-sm-1" rows="4" cols="80" name="content"
+                                              placeholder="New comment"></textarea>
+                                    <button class="btn btn-success mr-0 ml-auto" type="submit">Add</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div th:replace="fragments/fragments :: scripts"></div>
-</body>
+        <div th:replace="fragments/fragments :: scripts"></div>
+    </body>
 
 </html>

@@ -30,6 +30,7 @@ import projekti.domain.Skill;
 import projekti.domain.SkillVote;
 import projekti.domain.Account;
 import projekti.service.AccountService;
+import projekti.service.SkillService;
 
 /**
  *
@@ -42,13 +43,11 @@ public class ProfileController {
     AccountService accountService;
 
     @Autowired
-    SkillRepository skillRepository;
-
+    SkillService skillService;
+    
     @Autowired
     ImageRepository imageRepository;
 
-    @Autowired
-    SkillVoteRepository skillVoteRepository;
 
     @RequestMapping(path = "/profile")
     public String redirectToOwnProfile() {
@@ -56,8 +55,9 @@ public class ProfileController {
         if (auth == null || auth instanceof AnonymousAuthenticationToken) {
             return "redirect:/";
         }
+        
         String username = auth.getName();
-        System.out.println("username:" + username);
+        
         return "redirect:/profile/" + username;
     }
 
@@ -67,6 +67,7 @@ public class ProfileController {
         Account current = null;
         Boolean isOwnProfile = false;
         Boolean isAuthenticated = false;
+        
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
             isAuthenticated = true;
             current = accountService.fetch(authentication.getName());
@@ -74,12 +75,15 @@ public class ProfileController {
                 isOwnProfile = true;
             }
         }
-        List<Skill> topSkills = skillRepository.findTop3ByAccountOrderByUpvotesDesc(user);
+        
+        List<Skill> topSkills = skillService.listTopSkills(user);
+        
         model.addAttribute("user", user);
         model.addAttribute("current", current);
         model.addAttribute("isAuthenticated", isAuthenticated);
         model.addAttribute("isOwnProfile", isOwnProfile);
         model.addAttribute("topSkills", topSkills);
+        
         return "profile";
     }
 
@@ -89,6 +93,7 @@ public class ProfileController {
         Account current = null;
         Boolean isOwnProfile = false;
         Boolean isAuthenticated = false;
+        
         if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
             isAuthenticated = true;
             current = accountService.fetch(authentication.getName());
@@ -96,10 +101,12 @@ public class ProfileController {
                 isOwnProfile = true;
             }
         }
+        
         model.addAttribute("user", user);
         model.addAttribute("current", current);
         model.addAttribute("isAuthenticated", isAuthenticated);
         model.addAttribute("isOwnProfile", isOwnProfile);
+        
         return "profile_skills";
     }
 
@@ -115,10 +122,7 @@ public class ProfileController {
             return "redirect:/profile/" + username + "/skills";
         }
         
-        Account u = accountService.fetch(username);
-        Skill s = new Skill(u, skill, 0);
-
-        skillRepository.save(s);
+        skillService.add(username, skill);
 
         String referer = request.getHeader("Referer");
         
@@ -134,19 +138,7 @@ public class ProfileController {
         }
         Account voter = accountService.fetch(authentication.getName());
 
-        Skill skill = skillRepository.getOne(skillId);
-
-        if (skillVoteRepository.findBySkillAndVoter(skill, voter) != null) {
-            return "redirect:/profile/" + username;
-        }
-
-        SkillVote sv = new SkillVote(skill, voter);
-
-        skillVoteRepository.save(sv);
-
-        skill.setUpvotes(skill.getUpvotes() + 1);
-
-        skillRepository.save(skill);
+        skillService.addVote(skillId, voter);
         
         String referer = request.getHeader("Referer");
         
@@ -188,4 +180,6 @@ public class ProfileController {
         Account u = accountService.fetch(username);
         return u.getPicture().getContent();
     }
+    
+    //private Model checkAuthorization();
 }

@@ -38,6 +38,8 @@ public class Post extends AbstractPersistable<Long>{
     @Column(length = 4000)
     private String content;
     
+    private Integer likes;
+    
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
     private List<Comment> comments;
 }
