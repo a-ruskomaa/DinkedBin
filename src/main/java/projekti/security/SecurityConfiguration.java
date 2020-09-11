@@ -26,6 +26,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("********** ACTIVE PROFILE: PRODUCTION **********");
 
+        http.csrf().disable();
+        
         http.authorizeRequests()
                 .antMatchers("/register","/register/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
