@@ -51,11 +51,15 @@
 
                 <!-- Log in / log out -->
                 <div sec:authorize="isAuthenticated()" class="ml-auto">
-                    <a class="nav-item ml-auto" th:href="@{/logout}">Log out</a>
+                    <a class="nav-item" th:href="@{/logout}">Log out</a>
+                </div>
+
+                <div sec:authorize="isAnonymous()" class="ml-auto mr-3">
+                    <a class="nav-item" th:href="@{/register}">Register</a>
                 </div>
 
                 <div sec:authorize="isAnonymous()">
-                    <a class="nav-item ml-auto" th:href="@{/login}">Log in</a>
+                    <a class="nav-item" th:href="@{/login}">Log in</a>
                 </div>
             </div>
 
